@@ -1,0 +1,77 @@
+# Builds the Google Play app bundle (.aab) for KAĞAN from the web game.
+# Result (unsigned AAB + build log) is pushed to the "android-build" branch;
+# the bundle is signed with the upload key before uploading to Play Console.
+name: Android build
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - index.html
+      - capacitor.config.json
+      - app-assets/**
+      - .github/workflows/android.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: android-build
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Build
+        id: build
+        shell: bash
+        run: |
+          set -o pipefail
+          OUT="$RUNNER_TEMP/out"; mkdir -p "$OUT"
+          VERSION_NAME="$(grep -o "version:\['Sürüm [0-9.]*" index.html | grep -o '[0-9.]*$')"
+          VERSION_CODE=$((GITHUB_RUN_NUMBER + 100))
+          echo "versionName=$VERSION_NAME versionCode=$VERSION_CODE" | tee "$OUT/build.log"
+          {
+            mkdir -p www
+            cp index.html manifest.webmanifest icon-180.png icon-192.png icon-512.png www/
+            npm init -y >/dev/null
+            npm install @capacitor/core@7 @capacitor/android@7 @capacitor/status-bar@7 @capacitor/splash-screen@7
+            npm install -D @capacitor/cli@7 @capacitor/assets@3
+            npx cap add android
+            mkdir -p assets && cp app-assets/* assets/
+            npx @capacitor/assets generate --android --iconBackgroundColor '#0c1f33' --iconBackgroundColorDark '#0c1f33' --splashBackgroundColor '#0c1f33' --splashBackgroundColorDark '#0c1f33'
+            # portrait only
+            sed -i 's|<activity|<activity android:screenOrientation="portrait"|' android/app/src/main/AndroidManifest.xml
+            # version
+            sed -i -E "s/versionCode [0-9]+/versionCode $VERSION_CODE/; s/versionName \"[^\"]*\"/versionName \"$VERSION_NAME\"/" android/app/build.gradle
+            grep -E "versionCode|versionName|applicationId" android/app/build.gradle
+            npx cap sync android
+            cd android && chmod +x gradlew && ./gradlew bundleRelease --no-daemon --stacktrace
+          } 2>&1 | tee -a "$OUT/build.log"
+          cp android/app/build/outputs/bundle/release/app-release.aab "$OUT/kagan-unsigned.aab"
+          echo "$VERSION_CODE" > "$OUT/version-code.txt"
+
+      - name: Publish result to android-build branch
+        if: always()
+        shell: bash
+        run: |
+          OUT="$RUNNER_TEMP/out"
+          echo "status=${{ steps.build.outcome }} run=${{ github.run_number }} commit=${{ github.sha }}" > "$OUT/status.txt"
+          cd "$OUT"
+          git init -q && git checkout -q -b android-build
+          git config user.name "github-actions" && git config user.email "actions@github.com"
+          git add -A && git commit -q -m "Android build ${{ github.run_number }}: ${{ steps.build.outcome }}"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" android-build

@@ -340,6 +340,9 @@ const hud=$('hud'),startEl=$('start'),overEl=$('over'),hangarEl=$('hangar');
 let W=0,H=0,dpr=1,S=1;
 const store={get(k,d){try{const v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}},
   set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+// APP = running inside the Android/iOS store app (Capacitor), not the website
+const APP=!!(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform());
+if(APP){try{const SB=window.Capacitor.Plugins&&window.Capacitor.Plugins.StatusBar;if(SB){SB.setOverlaysWebView&&SB.setOverlaysWebView({overlay:true});SB.hide();}}catch(e){}}
 // ================= LANGUAGES =================
 // order: tr, en, zh, es, fr, de, ru
 const LANGS=[['tr','Türkçe','tr-TR'],['en','English','en-US'],['zh','中文','zh-CN'],['es','Español','es-ES'],['fr','Français','fr-FR'],['de','Deutsch','de-DE'],['ru','Русский','ru-RU']];
@@ -560,6 +563,7 @@ const I18N_SRC={
  ar_pause:['Duraklat','Pause','暂停','Pausa','Pause','Pause','Пауза'],
  ar_bomb:['Bomba at','Drop bomb','投下炸弹','Lanzar bomba','Larguer une bombe','Bombe werfen','Сбросить бомбу'],
  ar_prev:['Önceki uçak','Previous aircraft','上一架','Avión anterior','Avion précédent','Vorheriges Flugzeug','Предыдущий самолёт'],
+ soon:['Elmas paketleri yakında mağazada!','Gem packs are coming to the store soon!','钻石礼包即将上架！','¡Los paquetes de gemas llegarán pronto!','Les packs de gemmes arrivent bientôt !','Edelstein-Pakete kommen bald!','Наборы кристаллов скоро появятся!'],
  login_t:['GÜNLÜK ÖDÜL','DAILY REWARD','每日奖励','RECOMPENSA DIARIA','RÉCOMPENSE DU JOUR','TAGESBELOHNUNG','НАГРАДА ДНЯ'],
  login_d:['Her gün gir, ödülün büyüsün! 7. gün elmas kazanırsın.','Come back every day for bigger rewards! Day 7 gives gems.','每天登录，奖励越来越多！第 7 天送钻石。','¡Entra cada día y tu premio crece! El día 7 ganas gemas.','Revenez chaque jour pour de plus grosses récompenses ! Le 7e jour donne des gemmes.','Komm jeden Tag wieder, die Belohnung wächst! Tag 7 gibt Edelsteine.','Заходи каждый день — награда растёт! На 7-й день кристаллы.'],
  login_day:['{n}. GÜN','DAY {n}','第 {n} 天','DÍA {n}','JOUR {n}','TAG {n}','ДЕНЬ {n}'],
@@ -592,7 +596,7 @@ function setLang(l){LANG=l;LOCALE=LANGS.find(x=>x[0]===l)[2];store.set('kaanLang
 
 let best=store.get('kaanBest',0),coins=store.get('kaanCoins',0),owned=store.get('kaanOwned',['hurjet']),selId=store.get('kaanSel','hurjet');
 // TEST BUILD: aircraft unlocked for everyone (remove before the store release)
-const TEST_UNLOCK=['f22','f35','kaan'];
+const TEST_UNLOCK=APP?[]:['f22','f35','kaan']; // test jets only on the website, never in the store app
 TEST_UNLOCK.forEach(id=>{if(!owned.includes(id))owned.push(id);});store.set('kaanOwned',owned);
 if(!store.get('kaanF22pick',0)){selId='f22';store.set('kaanSel','f22');store.set('kaanF22pick',1);}
 if(!store.get('kaanKaan3dPick',0)){selId='kaan';store.set('kaanSel','kaan');store.set('kaanKaan3dPick',1);}
@@ -1765,7 +1769,8 @@ $('toMenu2').addEventListener('click',()=>{SND.click();clearField();showOnly(sta
 function openStore(msg){paintStore();openPanel(storeEl);if(msg)toast(L('gemsneeded'),msg);}
 function paintStore(){
   const pr=PRICES[LANG]||PRICES.en;
-  $('gemPacks').innerHTML=GEM_PACKS.map((k,i)=>'<div class="card"><div class="ic" style="background:rgba(79,216,255,.15)"><i class="gemI" style="width:24px;height:24px"></i></div><div class="tx"><b>'+L('ngems',{n:fmt(k.n)})+(k.tag?'<span class="tag2">'+L(k.tag)+'</span>':'')+'</b><small>'+L('exprice')+'</small></div><button class="sbtn gemb" data-pack="'+i+'">'+pr[i]+'</button></div>').join('');
+  if(APP){$('gemPacks').innerHTML='<div class="card"><div class="ic" style="background:rgba(79,216,255,.15)"><i class="gemI" style="width:24px;height:24px"></i></div><div class="tx"><b>'+L('soon')+'</b></div></div>';storeEl.querySelector('.note').hidden=true;}
+  else $('gemPacks').innerHTML=GEM_PACKS.map((k,i)=>'<div class="card"><div class="ic" style="background:rgba(79,216,255,.15)"><i class="gemI" style="width:24px;height:24px"></i></div><div class="tx"><b>'+L('ngems',{n:fmt(k.n)})+(k.tag?'<span class="tag2">'+L(k.tag)+'</span>':'')+'</b><small>'+L('exprice')+'</small></div><button class="sbtn gemb" data-pack="'+i+'">'+pr[i]+'</button></div>').join('');
   $('goldPacks').innerHTML=GOLD_PACKS.map((k,i)=>'<div class="card"><div class="ic">'+svgI('coin')+'</div><div class="tx"><b>'+L('ngold',{n:fmt(k.c)})+'</b><small>'+L('forgems',{n:k.g})+'</small></div><button class="sbtn gemb" data-gold="'+i+'"'+(gems<k.g?' disabled':'')+'><i class="gemI" style="width:12px;height:12px;display:inline-block;vertical-align:-1px"></i> '+k.g+'</button></div>').join('');
   paintCoins();}
 $('gemPacks').addEventListener('click',e=>{const b=e.target.closest('[data-pack]');if(!b)return;SND.click();
@@ -2136,6 +2141,6 @@ requestAnimationFrame(loop);
 </script>
 
 
-<script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
+<script>if('serviceWorker' in navigator&&!(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform()))addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
 </body>
 </html>

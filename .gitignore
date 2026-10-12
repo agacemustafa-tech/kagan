@@ -1,0 +1,6 @@
+node_modules/
+www/
+android/
+assets/
+package.json
+package-lock.json

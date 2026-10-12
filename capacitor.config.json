@@ -1,0 +1,11 @@
+{
+  "appId": "io.github.agacemustafatech.kagan",
+  "appName": "KAĞAN",
+  "webDir": "www",
+  "backgroundColor": "#0c1f33",
+  "android": { "backgroundColor": "#0c1f33" },
+  "plugins": {
+    "StatusBar": { "overlaysWebView": true, "style": "DARK" },
+    "SplashScreen": { "launchShowDuration": 1200, "backgroundColor": "#0c1f33", "showSpinner": false }
+  }
+}
