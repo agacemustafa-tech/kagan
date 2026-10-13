@@ -279,7 +279,7 @@ canvas{display:block}
       <div class="card toggle"><div class="tx"><b><span data-i18n="vib">Titreşim</span></b><small><span data-i18n="vibd">Vurulunca telefon titrer</span></small></div><button class="sw" role="switch" id="swVib"></button></div>
       <div class="card toggle"><div class="tx"><b><span data-i18n="shake">Ekran sarsıntısı</span></b><small><span data-i18n="shaked">Patlamalarda ekran sallanır</span></small></div><button class="sw" role="switch" id="swShake"></button></div>
       <div class="card"><div class="tx"><b><span data-i18n="resett">İlerlemeyi sıfırla</span></b><small><span data-i18n="resetd">Altın, elmas, uçaklar, yükseltmeler ve başarımlar silinir</span></small></div><button class="sbtn" id="resetBtn" style="background:#5a1a1f;color:#ffb3b8"><span data-i18n="reset">SIFIRLA</span></button></div>
-      <p class="small" style="text-align:center"><span data-i18n="version">Sürüm 2.6</span></p>
+      <p class="small" style="text-align:center"><span data-i18n="version">Sürüm 2.7</span></p>
       <button class="btn ghost" data-back style="align-self:center"><span data-i18n="back">GERİ</span></button>
     </div>
   </div>
@@ -508,7 +508,7 @@ const I18N_SRC={
  reset:['SIFIRLA','RESET','重置','REINICIAR','EFFACER','LÖSCHEN','СБРОС'],
  sure:['EMİN MİSİN?','ARE YOU SURE?','确定吗？','¿SEGURO?','SÛR ?','SICHER?','ТОЧНО?'],
  resetdone:['SIFIRLANDI','DONE','已重置','HECHO','FAIT','ERLEDIGT','ГОТОВО'],
- version:['Sürüm 2.6','Version 2.6','版本 2.6','Versión 2.6','Version 2.6','Version 2.6','Версия 2.6'],
+ version:['Sürüm 2.7','Version 2.7','版本 2.7','Versión 2.7','Version 2.7','Version 2.7','Версия 2.7'],
  back:['GERİ','BACK','返回','ATRÁS','RETOUR','ZURÜCK','НАЗАД'],
  ok:['TAMAM','OK','好的','VALE','OK','OK','ОК'],
  how:['NASIL OYNANIR','HOW TO PLAY','玩法说明','CÓMO JUGAR','COMMENT JOUER','SO WIRD GESPIELT','КАК ИГРАТЬ'],
@@ -1199,6 +1199,10 @@ function groundTile(){
       c=mixc(c,[200,215,235],(1-d)*.15);}
     const n=(vn2(x*1.7,y*1.7,Math.round(th*1.7))-.5)*10;
     D[i*4]=c[0]+n;D[i*4+1]=c[1]+n;D[i*4+2]=c[2]+n;D[i*4+3]=255;}
+  {let m0=0,m1=0,m2=0;const N=tw*th;for(let i=0;i<N;i++){m0+=D[i*4];m1+=D[i*4+1];m2+=D[i*4+2];}m0/=N;m1/=N;m2/=N;
+   const k=.62,dark=theme.light||theme.snow?.94:.86;
+   for(let i=0;i<N;i++){const j=i*4,l=(D[j]+D[j+1]+D[j+2])/3;
+     for(let q=0;q<3;q++){const mq=q?q>1?m2:m1:m0;let v=mq+(D[j+q]-mq)*k;v=v+(l-v)*.18;D[j+q]=v*dark;}}}
   g.putImageData(im,0,0);
   return GROUND[key]={cv,th};}
 function drawGround(){const T=groundTile(),o=((scroll%T.th)+T.th)%T.th;
@@ -1220,7 +1224,7 @@ function islandSprite(i){const key=i+'_'+S;if(ISL[key])return ISL[key];
     else if(e<.1)col=sand;
     else{const m=fbm(x/(14*S)+sd*2,y/(14*S),3);col=e>.75?mixc(forest,rock,clamp01((e-.75)*3)):mixc(grass,m>.55?dry:forest,Math.abs(m-.5)*1.6);
       const r=(E[i2-sz-1]-E[i2+sz+1])*14;col=mixc(col,r>0?[255,250,225]:[20,30,10],Math.min(.55,Math.abs(r)));}
-    const n=(hash(x*.37+y*13.1+sd)-.5)*8;D[i2*4]=col[0]+n;D[i2*4+1]=col[1]+n;D[i2*4+2]=col[2]+n;D[i2*4+3]=al;}
+    col=mixc(col,[90,130,140],.18);const n=(hash(x*.37+y*13.1+sd)-.5)*6;D[i2*4]=col[0]+n;D[i2*4+1]=col[1]+n;D[i2*4+2]=col[2]+n;D[i2*4+3]=al;}
   g.putImageData(im,0,0);
   // white Aegean village with blue doors and cast shadows
   if(hash(i*7.7)<.6){let n=0;for(let k=0;k<80&&n<16;k++){const x=c+(hash(k*3.1+sd)-.5)*R*.9,y=c+(hash(k*5.7+sd)-.5)*R*.8;if(E[Math.round(y)*sz+Math.round(x)]<.22)continue;n++;
@@ -1368,15 +1372,19 @@ function drawOverlayFx(dt){
 // bevels, grain). Each frame only blits the sprite and draws the moving parts on top:
 // rotors, turrets aimed at the player, engine flames, reactor glow, blinking lights.
 const ESPR={},SPR_K=5;
-function mkSpr(key,bb,fn){let o=ESPR[key];if(o)return o;
+function mkSpr(key,bb,fn){let o=ESPR[key];if(o)return o;const pad=3.2;bb=[bb[0]-pad,bb[1]-pad,bb[2]+pad*2,bb[3]+pad*2];
   const w=Math.ceil(bb[2]*SPR_K),h=Math.ceil(bb[3]*SPR_K);
   const mk=()=>{const cv=document.createElement('canvas');cv.width=w;cv.height=h;return cv;};
   const a=mk(),g=a.getContext('2d');g.setTransform(SPR_K,0,0,SPR_K,-bb[0]*SPR_K,-bb[1]*SPR_K);g.lineJoin='round';g.lineCap='round';fn(g);
   const tint=col=>{const cv=mk(),q=cv.getContext('2d');q.drawImage(a,0,0);q.globalCompositeOperation='source-in';q.fillStyle=col;q.fillRect(0,0,w,h);return cv;};
-  return ESPR[key]={img:a,wh:tint('#ffffff'),sh:tint('#000000'),red:tint('#ff2a2a'),bb};}
+  const sh=tint('#000000'),red=tint('#ff2a2a'),halo=mk(),hg=halo.getContext('2d');
+  // soft red enemy glow, then a crisp dark outline, so enemies read on any terrain
+  [[2.6,.09],[1.7,.16],[1,.26]].forEach(([r,al])=>{for(let k=0;k<16;k++){const an=k/16*TAU;hg.globalAlpha=al;hg.drawImage(red,Math.cos(an)*r*SPR_K,Math.sin(an)*r*SPR_K);}});
+  for(let k=0;k<12;k++){const an=k/12*TAU;hg.globalAlpha=.85;hg.drawImage(sh,Math.cos(an)*.55*SPR_K,Math.sin(an)*.55*SPR_K);}
+  return ESPR[key]={img:a,wh:tint('#ffffff'),sh,red,halo,bb};}
 function blit(c,sp,im,dx,dy){c.drawImage(im||sp.img,sp.bb[0]+(dx||0),sp.bb[1]+(dy||0),sp.bb[2],sp.bb[3]);}
 function drawSpr(c,sp,e,sx,sy,sa){
-  c.globalAlpha=sa||.24;blit(c,sp,sp.sh,sx,sy);c.globalAlpha=1;blit(c,sp);
+  c.globalAlpha=sa||.24;blit(c,sp,sp.sh,sx,sy);c.globalAlpha=1;blit(c,sp,sp.halo);blit(c,sp);
   if(e.hit>0){c.globalAlpha=Math.min(.8,e.hit*6);blit(c,sp,sp.wh);c.globalAlpha=1;}}
 // ---- painting helpers (used only while building sprites) ----
 function poly(g,P){g.beginPath();P.forEach((p,i)=>i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]));g.closePath();}
@@ -1525,7 +1533,7 @@ const SP_KAMI=()=>mkSpr('kami',[-16,-15,32,34],g=>{
 function drawKami(c,e){const sp=SP_KAMI(),s=e.s/14,a=e.ang||0;
   c.save();c.translate(e.x+13*s*.6,e.y+22*s*.6);c.rotate(a);c.scale(s,s);c.globalAlpha=.22;blit(c,sp,sp.sh);c.restore();
   c.save();c.translate(e.x,e.y);c.rotate(a);c.scale(s,s);
-  blit(c,sp);
+  blit(c,sp,sp.halo);blit(c,sp);
   if(e.lock>0&&Math.sin(t*30)>0){c.globalAlpha=.55;blit(c,sp,sp.red);c.globalAlpha=1;}
   if(e.hit>0){c.globalAlpha=Math.min(.8,e.hit*6);blit(c,sp,sp.wh);c.globalAlpha=1;}
   flame(c,0,-13.4,1.7,e.dive?16:8);
@@ -1581,7 +1589,7 @@ const SP_MINE=()=>mkSpr('mine',[-17,-17,34,34],g=>{
   ring(g,0,0,2.4,'#2a2e35');});
 function drawMine(c,e){const sp=SP_MINE(),s=e.s/14,a=t*.8+e.ph;
   c.save();c.translate(e.x+8*s,e.y+10*s);c.rotate(a);c.scale(s,s);c.globalAlpha=.22;blit(c,sp,sp.sh);c.restore();
-  c.save();c.translate(e.x,e.y);c.rotate(a);c.scale(s,s);blit(c,sp);
+  c.save();c.translate(e.x,e.y);c.rotate(a);c.scale(s,s);blit(c,sp,sp.halo);blit(c,sp);
   if(e.hit>0){c.globalAlpha=Math.min(.8,e.hit*6);blit(c,sp,sp.wh);c.globalAlpha=1;}
   const p=.5+.5*Math.sin(t*8+e.ph);glow(c,0,0,5+p*3,'rgba(255,'+Math.round(60+p*80)+',40,.9)',.6+p*.4);
   c.restore();}
