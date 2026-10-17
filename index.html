@@ -86,6 +86,7 @@ canvas{display:block}
   background:var(--glass);color:var(--ink);font-family:var(--display);font-size:1.5rem;line-height:1;cursor:pointer;display:grid;place-items:center}
 .arrow:focus-visible{outline:2px solid var(--gold)}
 #prev{left:0;z-index:2}#next{right:0;z-index:2}
+#hgTabs{width:100%;max-width:440px;box-sizing:border-box}
 .dots{display:flex;gap:6px}
 .dots i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.25)}
 .dots i.on{background:var(--gold)}
@@ -298,7 +299,9 @@ canvas{display:block}
           <span class="pw" style="background:#ff7a3a">B</span><small><span data-i18n="pw_B">Bomba: cebine bir bomba ekler</span></small>
           <span class="pw" style="background:#c77dff">R</span><small><span data-i18n="pw_R">Seri ateş: 8 saniye iki kat hızlı ateş</span></small>
           <span class="pw" style="background:#7df9ff">M</span><small><span data-i18n="pw_M">Mıknatıs: altınları ve güçlendirmeleri çeker</span></small>
+          <span class="pw" style="background:#b8f05a">İ</span><small><span data-i18n="pw_U">İHA desteği: DOĞAN gelir, yerdeki hava savunmasını vurur</span></small>
         </div></div>
+      <div class="card"><div class="tx"><b><span data-i18n="h_sam_t">Hava savunması</span></b><small><span data-i18n="h_sam">Yerdeki füze bataryaları sana güdümlü füze atar. Senin mermilerin onlara ulaşmaz: İHA desteği kutusunu topla ya da bomba kullan.</span></small></div></div>
       <div class="card"><div class="tx"><b><span data-i18n="h_gold_t">Altın</span></b><small><span data-i18n="h_gold">Düşmanlardan düşen altınlar hesabına eklenir. Görev sonunda skorunun %5'i de altına dönüşür.</span></small></div></div>
       <div class="card"><div class="tx"><b><span data-i18n="h_hard_t">Zorlu bölümler</span></b><small><span data-i18n="h_hard">Her 5. bölüm (5, 10, 15...) çok zordur ama ana gemisi elmas bırakır. Sonraki bölüm biraz daha kolay başlar.</span></small></div></div>
       <div class="card"><div class="tx"><b><span data-i18n="h_boss_t">Ana gemiler</span></b><small><span data-i18n="h_boss">Her bölüm sonunda bir dev düşman gelir. Canı yarıya inince öfkelenir! Kırmızı uyarı çizgisi lazer geleceğini gösterir.</span></small></div></div>
@@ -317,6 +320,7 @@ canvas{display:block}
 
   <div class="overlay" id="hangar" hidden>
     <div class="hgHead"><h2><span data-i18n="hangar">HANGAR</span></h2><div class="wallet"><div class="coins"><i class="coin"></i><span class="coinVal">0</span></div><div class="coins gem"><i class="gemI"></i><span class="gemVal">0</span></div></div></div>
+    <div class="tabs" id="hgTabs"><button id="tabJets" class="on"><span data-i18n="tab_jets">SAVAŞ JETLERİ</span></button><button id="tabSiha"><span data-i18n="tab_siha">SİHA'LAR</span></button></div>
     <div class="stage" id="stage">
       <button class="arrow" id="prev" aria-label="Önceki uçak" data-i18n-aria="ar_prev">‹</button>
       <div id="hgView"><canvas id="hgJet" width="1000" height="1000"></canvas><canvas id="hg3d" hidden></canvas><div id="tag3d" hidden>3D</div><div id="lock" hidden><span data-i18n="locked">KİLİTLİ</span></div><div id="hint"><span data-i18n="drag">Çevirmek için sürükle</span></div></div>
@@ -459,8 +463,21 @@ const I18N_SRC={
  j_su57_s:['Gizlilik ve yüksek hasar. 2. güçle başlar.','Stealth and high damage. Starts at power 2.','隐身且高伤害。开局即 2 级火力。','Sigilo y mucho daño. Empieza con poder 2.','Furtivité et gros dégâts. Démarre en puissance 2.','Tarnung und hoher Schaden. Startet mit Kraftstufe 2.','Стелс и высокий урон. Старт со 2-м уровнем мощи.'],
  j_f35_d:['Bulutların arasında kaybolan bir gölge. Görünmez kalır, füzeleriyle avlanır.','A shadow that vanishes among the clouds. Stays unseen and hunts with missiles.','隐没于云间的暗影，悄无声息，以导弹猎杀。','Una sombra que se pierde entre las nubes. Invisible, caza con sus misiles.','Une ombre qui disparaît dans les nuages. Reste invisible et chasse avec ses missiles.','Ein Schatten, der zwischen den Wolken verschwindet. Bleibt unsichtbar und jagt mit Raketen.','Тень, исчезающая среди облаков. Остаётся незаметной и охотится ракетами.'],
  j_f35_s:['Gizlilik ve erken füze. 2. güçle başlar.','Stealth and early missiles. Starts at power 2.','隐身且导弹提早解锁。开局即 2 级火力。','Sigilo y misiles tempranos. Empieza con poder 2.','Furtivité et missiles précoces. Démarre en puissance 2.','Tarnung und frühe Raketen. Startet mit Kraftstufe 2.','Стелс и ранние ракеты. Старт со 2-м уровнем мощи.'],
- j_tb2_d:['Silahlı insansız hava aracı. Sessizce süzülür, güdümlü füzeleriyle hedefini kilitler.','Armed drone. Glides in silently and locks on with guided missiles.','武装无人机。悄然滑翔，用制导导弹锁定目标。','Dron armado. Planea en silencio y fija el blanco con misiles guiados.','Drone armé. Il plane en silence et verrouille sa cible avec des missiles guidés.','Bewaffnete Drohne. Gleitet lautlos heran und erfasst Ziele mit Lenkraketen.','Ударный беспилотник. Бесшумно скользит и захватывает цель управляемыми ракетами.'],
- j_tb2_s:['İHA: güdümlü füzelerle başlar.','Drone: starts with guided missiles.','无人机：开局即有制导导弹。','Dron: empieza con misiles guiados.','Drone : commence avec des missiles guidés.','Drohne: startet mit Lenkraketen.','БПЛА: начинает с управляемыми ракетами.'],
+ j_tb2_d:["Silahlı İHA. KAĞAN'ın önünden gider, yerdeki hava savunmasını susturup sana yol açar.",'Armed drone. Flies ahead of your jet, silences ground air defences and clears the way.','武装无人机。飞在战机前方，摧毁地面防空，为你开路。','Dron armado. Vuela delante de tu caza, silencia las defensas antiaéreas y te abre camino.',"Drone armé. Il vole devant ton chasseur, neutralise la défense sol-air et t'ouvre la voie.",'Bewaffnete Drohne. Fliegt vor deinem Jet, schaltet die Flugabwehr aus und macht den Weg frei.','Ударный БПЛА. Летит впереди истребителя, подавляет наземную ПВО и расчищает путь.'],
+ j_tb2_s:['İHA desteği kutusuyla gelir, yer hedeflerini kendisi bulup 6 füzeyle vurur.','Arrives with the drone support box and hunts ground targets with 6 missiles.','拾取无人机支援箱后出动，用 6 枚导弹自动搜寻地面目标。','Llega con la caja de apoyo y caza objetivos en tierra con 6 misiles.','Arrive avec la caisse de soutien et chasse les cibles au sol avec 6 missiles.','Kommt mit der Drohnen-Kiste und jagt Bodenziele mit 6 Raketen.','Прилетает с ящиком поддержки и сам находит наземные цели, 6 ракет.'],
+ tab_jets:['SAVAŞ JETLERİ','FIGHTER JETS','战斗机','CAZAS','CHASSEURS','KAMPFJETS','ИСТРЕБИТЕЛИ'],
+ tab_siha:["SİHA'LAR",'DRONES','无人机','DRONES','DRONES','DROHNEN','БПЛА'],
+ pw_U:['İHA desteği: DOĞAN gelir, yerdeki hava savunmasını vurur','Drone support: DOĞAN arrives and strikes ground air defences','无人机支援：DOĞAN 赶来摧毁地面防空','Apoyo de dron: llega DOĞAN y ataca las defensas antiaéreas','Soutien drone : DOĞAN arrive et frappe la défense sol-air','Drohnen-Support: DOĞAN greift die Flugabwehr am Boden an','Поддержка БПЛА: DOĞAN бьёт по наземной ПВО'],
+ h_sam_t:['Hava savunması','Air defence','防空阵地','Defensa antiaérea','Défense sol-air','Flugabwehr','ПВО'],
+ h_sam:['Yerdeki füze bataryaları sana güdümlü füze atar. Senin mermilerin onlara ulaşmaz: İHA desteği kutusunu topla ya da bomba kullan.',"Ground missile batteries fire guided missiles at you. Your guns can't reach them: grab the drone support box or use a bomb.",'地面导弹阵地会向你发射制导导弹。你的机炮打不到它们：拾取无人机支援箱或使用炸弹。','Las baterías de misiles en tierra te lanzan misiles guiados. Tus cañones no las alcanzan: recoge la caja de apoyo de dron o usa una bomba.','Les batteries au sol tirent des missiles guidés. Tes canons ne les atteignent pas : prends la caisse de soutien drone ou utilise une bombe.','Raketenbatterien am Boden feuern Lenkraketen auf dich. Deine Kanonen erreichen sie nicht: Sammle die Drohnen-Kiste oder nutze eine Bombe.','Наземные ракетные батареи пускают в тебя управляемые ракеты. Пушки их не достают: подбери ящик поддержки БПЛА или используй бомбу.'],
+ uav_in:['{x} DESTEĞE GELDİ','{x} INBOUND','{x} 支援抵达','{x} EN CAMINO','{x} EN APPUI','{x} IM ANFLUG','{x} НА ПОДХОДЕ'],
+ uav_out:['{x} ÜSSE DÖNÜYOR','{x} RETURNING TO BASE','{x} 返航','{x} REGRESA A LA BASE','{x} RENTRE À LA BASE','{x} KEHRT ZURÜCK','{x} ВОЗВРАЩАЕТСЯ НА БАЗУ'],
+ sam_warn:['HAVA SAVUNMASI!','AIR DEFENCE!','防空警报！','¡ANTIAÉREO!','DÉFENSE SOL-AIR !','FLUGABWEHR!','ПВО!'],
+ sam_kill:['SAVUNMA İMHA','SAM DOWN','防空已摧毁','SAM DESTRUIDO','SAM DÉTRUIT','SAM ZERSTÖRT','ПВО УНИЧТОЖЕНА'],
+ b_uav:['İHA','DRONE','无人机','DRON','DRONE','DROHNE','БПЛА'],
+ s_ammo:['FÜZE','MISSILES','导弹','MISILES','MISSILES','RAKETEN','РАКЕТЫ'],
+ s_time:['SÜRE','ENDURANCE','续航','AUTONOMÍA','ENDURANCE','AUSDAUER','ВРЕМЯ'],
+ s_lock:['KİLİTLENME','LOCK-ON','锁定','FIJACIÓN','VERROUILLAGE','ERFASSUNG','ЗАХВАТ'],
  j_kaan_d:['Göklerin hükümdarı, filonun efsanesi. En hızlı ateş, en güçlü zırh.','Ruler of the skies, legend of the squadron. Fastest fire, strongest armour.','天空的君主，中队的传奇。射速最快，装甲最强。','Soberano de los cielos, leyenda del escuadrón. El fuego más rápido, el blindaje más fuerte.','Souverain du ciel, légende de l\'escadrille. Le tir le plus rapide, le blindage le plus solide.','Herrscher der Lüfte, Legende der Staffel. Schnellstes Feuer, stärkste Panzerung.','Повелитель небес, легенда эскадрильи. Самый быстрый огонь, самая крепкая броня.'],
  j_kaan_s:['Gizlilik, erken füze, 5 can ve en hızlı ateş.','Stealth, early missiles, 5 lives and the fastest fire.','隐身、导弹提早解锁、5 条命、射速最快。','Sigilo, misiles tempranos, 5 vidas y el disparo más rápido.','Furtivité, missiles précoces, 5 vies et le tir le plus rapide.','Tarnung, frühe Raketen, 5 Leben und schnellstes Feuer.','Стелс, ранние ракеты, 5 жизней и самый быстрый огонь.'],
  spd:['HIZ','SPEED','速度','VELOCIDAD','VITESSE','TEMPO','СКОРОСТЬ'],
@@ -510,7 +527,7 @@ const I18N_SRC={
  reset:['SIFIRLA','RESET','重置','REINICIAR','EFFACER','LÖSCHEN','СБРОС'],
  sure:['EMİN MİSİN?','ARE YOU SURE?','确定吗？','¿SEGURO?','SÛR ?','SICHER?','ТОЧНО?'],
  resetdone:['SIFIRLANDI','DONE','已重置','HECHO','FAIT','ERLEDIGT','ГОТОВО'],
- version:['Sürüm 2.8','Version 2.8','版本 2.8','Versión 2.8','Version 2.8','Version 2.8','Версия 2.8'],
+ version:['Sürüm 2.9','Version 2.9','版本 2.9','Versión 2.9','Version 2.9','Version 2.9','Версия 2.9'],
  back:['GERİ','BACK','返回','ATRÁS','RETOUR','ZURÜCK','НАЗАД'],
  ok:['TAMAM','OK','好的','VALE','OK','OK','ОК'],
  how:['NASIL OYNANIR','HOW TO PLAY','玩法说明','CÓMO JUGAR','COMMENT JOUER','SO WIRD GESPIELT','КАК ИГРАТЬ'],
@@ -598,7 +615,7 @@ function setLang(l){LANG=l;LOCALE=LANGS.find(x=>x[0]===l)[2];store.set('kaanLang
 
 let best=store.get('kaanBest',0),coins=store.get('kaanCoins',0),owned=store.get('kaanOwned',['hurjet']),selId=store.get('kaanSel','hurjet');
 // TEST BUILD: aircraft unlocked for everyone (remove before the store release)
-const TEST_UNLOCK=APP?[]:['f22','f35','kaan','tb2']; // test jets only on the website, never in the store app
+const TEST_UNLOCK=APP?[]:['f22','f35','kaan']; // test jets only on the website, never in the store app
 TEST_UNLOCK.forEach(id=>{if(!owned.includes(id))owned.push(id);});store.set('kaanOwned',owned);
 if(!store.get('kaanF22pick',0)){selId='f22';store.set('kaanSel','f22');store.set('kaanF22pick',1);}
 if(!store.get('kaanKaan3dPick',0)){selId='kaan';store.set('kaanSel','kaan');store.set('kaanKaan3dPick',1);}
@@ -709,7 +726,7 @@ function thName(lv){return L('th'+((lv-1)%THEMES.length));}
 function showBest(){$('bestStart').textContent=best?L('best',{n:fmt(best)}):'';}
 let gems=store.get('kaanGems',0);
 const COIN_RATE=.05; // skorun %5'i altına dönüşür
-const GEMP={f16:60,f18:120,tb2:150,f15:180,su35:260,rafale:320,typhoon:320,f22:420,su57:420,f35:500,kaan:600};
+const GEMP={f16:60,f18:120,f15:180,su35:260,rafale:320,typhoon:320,f22:420,su57:420,f35:500,kaan:600};
 const CONT_COST=[25,50];
 const GEM_PACKS=[{n:80},{n:450,tag:'tag_bonus'},{n:1000,tag:'tag_pop'},{n:2200,tag:'tag_best'}];
 const GOLD_PACKS=[{g:40,c:3000},{g:120,c:10000},{g:300,c:28000}];
@@ -734,10 +751,6 @@ const JETS=[
   pts:[[0,-46],[1.8,-41],[3,-34],[3.8,-26],[5,-18],[7.5,-10],[11,-3],[12.5,1],[30,9],[30.5,9],[30.5,14],[13,16],[12,21],[24,27.5],[24,32],[9.5,31],[7.5,37],[0.6,37],[0,36]],
   tails:{t:'cant',x0:9,y0:9,x1:11,y1:27,lean:4.5},canopy:{y0:-35,y1:-16,w:3.2,tint:'clear'},intake:null,
   noz:[-3.9,3.9],nozY:36,nozR:3,col:['#5f6873','#a7afb8','#545d68'],le:[[12.5,1],[30,9]],flag:[-20,10.5],nav:[30.5,11.5]},
- {id:'tb2',name:'DOĞAN',desc:'Silahlı insansız hava aracı. Sessizce süzülür, güdümlü füzeleriyle hedefini kilitler.',price:25000,hp:3,rate:.16,dmg:1.15,spd:.95,startP:1,miss:1,special:'İHA: güdümlü füzelerle başlar.',
-  pts:[[0,-17],[1.5,-15],[2.6,-11],[3,-5],[31,-4],[31.5,-3],[31.5,.5],[31,1.5],[7.6,1.5],[7.6,13],[9,16],[1,17],[0,17]],
-  tails:{t:'vert',x:7.6,y0:8,y1:16},canopy:{y0:-15,y1:-9,w:1.6,tint:'clear'},intake:null,
-  noz:[0],nozY:8,nozR:1.4,col:['#6b7782','#a9b4bf','#5d6873'],le:[[3,-5],[31,-4]],flag:[-20,-1],nav:[31.5,-1.5],code:'DG-01'},
  {id:'f15',name:'BOZKURT',desc:'Bozkırların efsanevi kurdu gibi güçlü. Her atışı ağır vurur.',price:30000,hp:4,rate:.12,dmg:1.35,spd:1.0,startP:1,special:'Her mermi daha fazla hasar verir.',
   pts:[[0,-46],[1.8,-41],[3,-33],[3.8,-25],[4.2,-21],[10.5,-19],[10.5,-4],[12,-2],[34,12],[34,17.5],[12.5,18],[12,22],[26,29],[25,34],[10.5,32],[8,38],[0.6,38],[0,37]],
   tails:{t:'vert',x:9.6,y0:11,y1:32},canopy:{y0:-37,y1:-20,w:3.4,tint:'clear'},intake:[[4.4,-21],[10.4,-19.2],[10.4,-16.5],[4.4,-18.6]],
@@ -771,6 +784,17 @@ const JETS=[
   tails:{t:'cant',x0:8.2,y0:6,x1:10.8,y1:24,lean:5.2},canopy:{y0:-33,y1:-11,w:3.6,tint:'gold'},intake:[[6.2,-17],[9.4,-9],[9.6,-3],[6.4,-6]],
   noz:[-5.9,5.9],nozY:37,nozR:3.6,col:['#59626c','#b6bfc8','#4e5761'],le:[[11.2,-2],[34,13]],flag:[-23,12],nav:[34.4,16],code:'TC-001'}
 ];
+// ================= SİHA (support drones) =================
+// Not flown by the player: summoned by the drone-support box, flies ahead and hunts ground air defences.
+const SIHAS=[
+ {id:'tb2',name:'DOĞAN',price:0,gem:0,ammo:6,dur:18,lockT:.7,
+  pts:[[0,-17],[1.5,-15],[2.6,-11],[3,-5],[31,-4],[31.5,-3],[31.5,.5],[31,1.5],[7.6,1.5],[7.6,13],[9,16],[1,17],[0,17]],
+  tails:{t:'vert',x:7.6,y0:8,y1:16},canopy:{y0:-15,y1:-9,w:1.6,tint:'clear'},intake:null,
+  noz:[],nozY:8,nozR:1.4,col:['#6b7782','#a9b4bf','#5d6873'],le:[[3,-5],[31,-4]],flag:[-20,-1],nav:[31.5,-1.5],code:'DG-01'}
+];
+let sihaOwned=store.get('kaanSihaOwned',['tb2']),sihaSel=store.get('kaanSihaSel','tb2');
+SIHAS.forEach(m=>{if(!m.price&&!sihaOwned.includes(m.id))sihaOwned.push(m.id);});
+const SIHA=()=>SIHAS.find(m=>m.id===sihaSel&&sihaOwned.includes(m.id))||SIHAS[0];
 let J=JETS.find(j=>j.id===selId)||JETS[0];
 
 function flag(c,x,y,s,rot){
@@ -801,7 +825,7 @@ const DET={
  tb2:{fus:[[-17,0],[-15,1.5],[-11,2.6],[-5,3],[2,3],[6,2.4],[8,1.2],[8.5,0]],te:[[7.6,1.5],[31,1.5]],arms:[[13,-1,'aim9']],radome:'#3a3f45'},
  kaan:{fus:[[-46,0],[-42,1.4],[-36,2.8],[-28,4.4],[-20,6],[-12,7.6],[-4,8.4],[6,8.2],[16,7.6],[26,7.4],[34,7.2],[37.5,6.4],[38,0]],te:[[15,20],[34.4,18.5]],arms:[],radome:'#565f69'}
 };
-JETS.forEach(j=>Object.assign(j,DET[j.id]||{}));
+JETS.forEach(j=>Object.assign(j,DET[j.id]||{}));SIHAS.forEach(j=>Object.assign(j,DET[j.id]||{}));
 function fusW(F,y){for(let i=0;i<F.length-1;i++){const a=F[i],b=F[i+1];if(y>=a[0]&&y<=b[0]){const f=(y-a[0])/((b[0]-a[0])||1);return a[1]+(b[1]-a[1])*f;}}return 0;}
 function fusPath(c,F){
   const right=F.map(p=>[p[1],p[0]]),left=F.slice(1,-1).reverse().map(p=>[-p[1],p[0]]);
@@ -1724,7 +1748,7 @@ function drawGold(c,g){
   c.fillStyle=gr;c.beginPath();c.arc(0,0,r,0,TAU);c.fill();c.strokeStyle='rgba(120,80,0,.7)';c.lineWidth=1.2;c.stroke();
   c.restore();
 }
-function drawPowerKind(k){return{P:'#ffc940',S:'#4fc3ff',H:'#4be08a',B:'#ff7a3a',R:'#c77dff',M:'#7df9ff'}[k];}
+function drawPowerKind(k){return{P:'#ffc940',S:'#4fc3ff',H:'#4be08a',B:'#ff7a3a',R:'#c77dff',M:'#7df9ff',U:'#b8f05a'}[k];}
 // ---- projectiles ----
 // player: cyan laser bolt with glow and a short muzzle flash
 function drawLaserBolt(b,under){
@@ -1786,11 +1810,13 @@ function drawPower(c,x,y,k,r){
   const g=c.createRadialGradient(-r*.3,-r*.3,1,0,0,r);g.addColorStop(0,'#fff');g.addColorStop(.35,col);g.addColorStop(1,'rgba(0,0,0,.4)');
   c.fillStyle=g;c.beginPath();c.arc(0,0,r,0,TAU);c.fill();c.strokeStyle='rgba(255,255,255,.85)';c.lineWidth=2;c.stroke();
   c.fillStyle='#0c1f33';c.font='400 '+(r*1.1)+'px "Russo One",sans-serif';c.textAlign='center';c.textBaseline='middle';
+  if(k==='U'){c.font='400 '+(r*.62)+'px "Russo One",sans-serif';c.fillText('İHA',0,1);c.restore();return;}
   c.fillText(k==='H'?'+':k,0,1);c.restore();
 }
 
 // ================= GAME STATE =================
 let player=null,pb=[],eb=[],enemies=[],powers=[],parts=[],rings=[],pops=[],golds=[],lasers=[];
+let grounds=[],uav=null,uavM=[],samT=0,samFirst=true;
 let t=0,last=0,running=false,paused=false,score=0,spawnT=0,fireT=0,missT=0,shake=0,level=1,flashT=0,bombFlash=0;
 let DL=1;const isHard=()=>level%5===0;
 // difficulty rises over each block of 5 levels; every 5th level is extra hard, the next one eases off
@@ -1803,12 +1829,12 @@ const maxBombs=()=>3+UP.bomb;
 function reset(){
   const mh=J.hp+UP.hp;
   player={x:W/2,y:H*.8,hp:mh,max:mh,inv:0,power:J.startP,shield:0,bank:0,bombs:1+UP.bomb,rapid:0,magnet:0};
-  pb=[];eb=[];enemies=[];powers=[];parts=[];rings=[];pops=[];golds=[];lasers=[];
+  pb=[];eb=[];enemies=[];powers=[];parts=[];rings=[];pops=[];golds=[];lasers=[];grounds=[];uav=null;uavM=[];samFirst=true;
   combo.kills=0;combo.t=0;combo.mult=1;
   t=0;score=0;fireT=0;missT=0;level=1;theme=THEMES[0];buildScenery();newRun();startLevel();updateHud();
 }
 function startLevel(){
-  DL=calcDL();phase='intro';phaseT=0;fightLen=38+Math.min(4,level)*4;spawnT=0;hits=0;
+  DL=calcDL();phase='intro';phaseT=0;fightLen=38+Math.min(4,level)*4;spawnT=0;hits=0;grounds=[];uavM=[];samT=level===1?13:7;
   banner={a:L('lv',{n:level}),b:(isHard()?L('hardlv')+'  •  ':'')+thName(level),life:2.8,gold:isHard()?1:0};if(isHard())setTimeout(()=>{if(running)SND.siren();},400);
   track('level',level,true);if(level>STAT.maxLevel)STAT.maxLevel=level;
   if(level>1)checkAch();
@@ -1825,6 +1851,7 @@ function paintBuffs(){
   if(player.shield>0)b.push([L('b_shield'),player.shield,'#4fc3ff']);
   if(player.rapid>0)b.push([L('b_rapid'),player.rapid,'#c77dff']);
   if(player.magnet>0)b.push([L('b_magnet'),player.magnet,'#7df9ff']);
+  if(uav&&uav.st!=='out')b.push([L('b_uav'),uav.st==='in'?uav.life:uav.life,'#b8f05a']);
   $('buffs').innerHTML=b.map(x=>'<div class="pill" style="color:'+x[2]+'">'+x[0]+' '+Math.ceil(x[1])+'</div>').join('');
   const cb=$('combo');
   if(combo.mult>1){cb.hidden=false;$('comboVal').textContent='x'+combo.mult;$('comboBar').style.width=Math.round(Math.min(1,combo.t/2.4)*100)+'%';}
@@ -1887,6 +1914,7 @@ function useBomb(){
   eb=[];lasers=[];bombFlash=.6;player.inv=Math.max(player.inv,1);SND.bomb();buzz(220);shake=.6;
   rings.push({x:player.x,y:player.y,r:30,max:Math.max(W,H)*1.2,life:1,col:'#ffd27a'});
   for(let i=0;i<40;i++){const a=rnd(0,TAU),v=rnd(200,600);parts.push({x:player.x,y:player.y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,life:1,dec:rnd(.8,1.4),r:rnd(3,7),c:'#ffd27a'});}
+  grounds.slice().forEach(g=>{if(g.y>-10&&g.y<H+10)killSam(g,false);});
   enemies.forEach(e=>{if(e.y<-20)return;e.hp-=e.k==='boss'?Math.min(e.max*.08,60*dmgMul()):30*dmgMul();e.hit=.15;});
   pops.push({x:W/2,y:H*.5,txt:L('bombbang'),c:'#ffd27a',life:1,big:1,fixed:1});
   updateHud();
@@ -1897,6 +1925,89 @@ function addCombo(e){
   if(m>combo.mult){combo.mult=m;SND.comboUp(m);pops.push({x:player.x,y:player.y-70*S,txt:L('combox',{n:m}),c:'#ffc940',life:1.1});
     track('combo',m,true);if(m>STAT.maxCombo)STAT.maxCombo=m;}
 }
+
+// ================= GROUND AIR DEFENCE + SİHA SUPPORT =================
+// S-400 style batteries sit on the ground and scroll with the terrain. Player guns pass over them;
+// they are cleared by the SİHA (drone-support box) or by a bomb.
+const SP_SAM=()=>mkSpr('sam',[-22,-24,44,48],g=>{
+  // sandbag revetment
+  g.fillStyle='#a88f5f';g.beginPath();g.ellipse(0,1,21,22,0,0,TAU);g.fill();
+  g.fillStyle='#7d6a45';g.beginPath();g.ellipse(0,1,16.5,17.5,0,0,TAU);g.fill();
+  g.strokeStyle='rgba(60,45,25,.55)';g.lineWidth=.5;for(let i=0;i<22;i++){const a=i/22*TAU;g.beginPath();g.moveTo(Math.cos(a)*16.8,1+Math.sin(a)*17.8);g.lineTo(Math.cos(a)*20.7,1+Math.sin(a)*21.7);g.stroke();}
+  // launcher truck (TEL), nose down-screen
+  plate(g,[[-6.5,-15],[6.5,-15],[6.5,13],[-6.5,13]],'#6c7350','#3d4230',{bevel:.6});
+  plate(g,[[-6.5,13],[6.5,13],[5.6,19],[-5.6,19]],'#5d6446','#30351f',{bevel:.5});
+  glass(g,0,17.2,3.6,1.1,'clear');
+  [-10,-3,6].forEach(y=>{[-7.4,7.4].forEach(x=>{g.fillStyle='#14161a';g.fillRect(x-1.2,y-2.2,2.4,4.4);});});
+  // four raised missile canisters
+  [-4.6,-1.55,1.55,4.6].forEach(x=>{cyl(g,x,-15.5,2.7,24,'#8a916b');g.fillStyle='#2a2d22';g.beginPath();g.arc(x,-15.2,1.1,0,TAU);g.fill();});
+  seams(g,[[-6.5,9,6.5,9],[-6.5,-15,6.5,-15]],.4);
+  rivets(g,[[-5.5,10.5],[5.5,10.5],[-5.5,-13.5],[5.5,-13.5]],.35);
+  // radar mast box beside the truck
+  plate(g,[[9,-6],[15,-6],[15,2],[9,2]],'#5f6648','#33381f',{bevel:.4});});
+function drawSam(g){const sp=SP_SAM(),s=g.s/22;
+  ctx.save();ctx.translate(g.x,g.y);ctx.scale(s,s);drawSpr(ctx,sp,g,10,14,.22);
+  // spinning radar on the mast box
+  ctx.save();ctx.translate(12,-2);ctx.rotate(t*3+g.ph);ctx.fillStyle='#c9cfb5';ctx.fillRect(-4.5,-1,9,2);ctx.fillStyle='#2b2f22';ctx.fillRect(-.8,-.8,1.6,1.6);ctx.restore();
+  const bl=Math.sin(t*5+g.ph)>.6;ctx.fillStyle=bl?'#ff3b30':'#5a1410';ctx.beginPath();ctx.arc(-5.4,10.8,1,0,TAU);ctx.fill();
+  if(g.warn>0){const a=.4+.4*Math.sin(t*28);ctx.strokeStyle='rgba(255,60,60,'+a+')';ctx.lineWidth=2/s;ctx.beginPath();ctx.arc(0,0,27,0,TAU);ctx.stroke();}
+  ctx.restore();}
+function spawnSam(){
+  if(grounds.length>=(DL>=3?3:2))return;
+  let x=rnd(W*.14,W*.86),y=-40*S;
+  if(theme.feat==='island'){const f=feats.find(f=>f.y<-30*S&&f.y>-260*S&&f.x>W*.12&&f.x<W*.88);if(!f){samT=1.5;return;}x=f.x+rnd(-18,18)*S;y=f.y+rnd(-12,12)*S;}
+  else if(theme.feat==='bosphorus')x=Math.random()<.5?W*rnd(.05,.1):W*rnd(.9,.95);
+  if(grounds.some(o=>Math.hypot(o.x-x,o.y-y)<48*S)){samT=1.5;return;}
+  const g={x,y,s:22*S,hp:1,cd:rnd(1.4,2.2),warn:0,hit:0,ph:rnd(0,6),claimed:0};grounds.push(g);
+  if(samFirst||(!uav&&!powers.some(p=>p.k==='U')&&Math.random()<.45)){powers.push({x:rnd(W*.25,W*.75),y:-30,k:'U',t:0});}
+  if(samFirst){samFirst=false;pops.push({x:W/2,y:H*.3,txt:L('sam_warn'),c:'#ff5a4a',life:1.8,big:1,fixed:1});SND.warn();}
+}
+function killSam(g,byUav){const i=grounds.indexOf(g);if(i<0)return;grounds.splice(i,1);
+  explode(g.x,g.y,44*S);for(let k=0;k<10;k++)parts.push({x:g.x+rnd(-12,12)*S,y:g.y+rnd(-12,12)*S,vx:rnd(-15,15),vy:rnd(-30,0),life:1,dec:.45,r:rnd(6,11)*S,c:'smoke'});
+  const pts=150*level;score+=pts;pops.push({x:g.x,y:g.y-18*S,txt:L('sam_kill')+'  +'+pts.toLocaleString(LOCALE),c:'#b8f05a',life:1.3});
+  STAT.kills++;track('kills',1);dropGold(g.x,g.y,2);updateHud();}
+function updateGround(dt){const fm=1+(DL-1)*.15;
+  for(let i=grounds.length-1;i>=0;i--){const g=grounds[i];g.y+=45*dt;g.hit=Math.max(0,g.hit-dt);
+    if(g.y>H+60*S){grounds.splice(i,1);continue;}
+    if(phase==='clear'||g.y<30||g.y>H*.72)continue;
+    if(g.warn>0){g.warn-=dt;if(g.warn<=0){aimed(g,165+DL*8,0,{home:2.3,r:7,homing:1});
+        for(let k=0;k<8;k++)parts.push({x:g.x+rnd(-10,10)*S,y:g.y+rnd(-6,6)*S,vx:rnd(-30,30),vy:rnd(-30,30),life:1,dec:1,r:rnd(4,7)*S,c:'smoke'});SND.missile();}}
+    else{g.cd-=dt*fm;if(g.cd<=0){g.warn=.8;g.cd=rnd(3.8,5)/(1+(DL-1)*.08);SND.warn();}}}
+  // SİHA support
+  if(uav){const u=uav,m=u.m,px=u.x;u.t+=dt;
+    if(u.st==='in'){u.y+=(H*.44-u.y)*Math.min(1,dt*2.2);u.x+=(player.x-u.x)*Math.min(1,dt*1.5);if(Math.abs(u.y-H*.44)<8){u.st='hunt';}}
+    else if(u.st==='hunt'){u.life-=dt;u.cd-=dt;
+      if(u.tg&&!grounds.includes(u.tg))u.tg=null,u.lock=0;
+      if(!u.tg){let bd=1e9;grounds.forEach(g=>{if(g.claimed||g.y<10||g.y>H*.82)return;const d=Math.abs(g.x-u.x)+Math.abs(g.y-u.y)*.5;if(d<bd){bd=d;u.tg=g;}});u.lock=0;}
+      const tx=u.tg?u.tg.x:(player.x<W/2?Math.min(W*.8,player.x+W*.28):Math.max(W*.2,player.x-W*.28));
+      const vx=Math.max(-190,Math.min(190,(tx-u.x)*2.2));u.x+=vx*dt;u.y+=((H*.42)-u.y)*Math.min(1,dt*2);
+      if(u.tg){u.lock+=dt;if(u.lock>=m.lockT&&u.cd<=0&&u.ammo>0){u.ammo--;u.cd=.65;u.tg.claimed=1;u.lock=0;
+        uavM.push({x:u.x,y:u.y+6*S,vx:rnd(-40,40),vy:-60,tg:u.tg,life:3});u.tg=null;SND.missile();}}
+      if(u.life<=0||(u.ammo<=0&&!uavM.length)){u.st='out';pops.push({x:u.x,y:u.y-30*S,txt:L('uav_out',{x:m.name}),c:'#b8f05a',life:1.4});}}
+    else{u.y-=280*dt;if(u.y<-90*S)uav=null;}
+    if(uav)u.bank+=(((u.x-px)/Math.max(dt,.001))/700-u.bank)*Math.min(1,dt*6),u.bank=Math.max(-.5,Math.min(.5,u.bank));}
+  for(let i=uavM.length-1;i>=0;i--){const b=uavM[i];b.life-=dt;
+    if(b.tg&&!grounds.includes(b.tg))b.tg=grounds.find(g=>g.y>0&&g.y<H)||null;
+    if(b.tg){const a=Math.atan2(b.tg.y-b.y,b.tg.x-b.x);b.vx+=Math.cos(a)*1100*dt;b.vy+=Math.sin(a)*1100*dt;}
+    const sp=Math.hypot(b.vx,b.vy);if(sp>430){b.vx*=430/sp;b.vy*=430/sp;}
+    b.x+=b.vx*dt;b.y+=b.vy*dt;if(Math.random()<.7)parts.push({x:b.x,y:b.y,vx:rnd(-10,10),vy:rnd(-10,10),life:.6,dec:1.5,r:3,c:'smoke'});
+    if(b.tg&&Math.hypot(b.tg.x-b.x,b.tg.y-b.y)<9*S){killSam(b.tg,true);uavM.splice(i,1);continue;}
+    if(b.life<=0||b.y<-40||b.y>H+40){uavM.splice(i,1);}}
+}
+function callUav(){const m=SIHA();
+  if(uav&&uav.st!=='out'){uav.ammo=m.ammo;uav.life=m.dur;}
+  else uav={m,x:player.x,y:H+90*S,st:'in',t:0,life:m.dur,ammo:m.ammo,cd:.4,lock:0,tg:null,bank:0};
+  pops.push({x:W/2,y:H*.3,txt:L('uav_in',{x:m.name}),c:'#b8f05a',life:1.8,big:1,fixed:1});SND.power();}
+function drawGrounds(){grounds.forEach(drawSam);}
+function drawUav(){const u=uav,m=u.m;
+  drawJet(ctx,u.x,u.y,S*1.05,u.bank,false,true,m);
+  // pusher propeller blur
+  ctx.save();ctx.translate(u.x,u.y+7*S*1.05);ctx.globalAlpha=.32;ctx.fillStyle='#d9dee3';ctx.beginPath();ctx.ellipse(0,0,4.6*S*1.05,1.1*S,0,0,TAU);ctx.fill();ctx.restore();
+  if(u.st==='hunt'&&u.tg){const g=u.tg,k=Math.min(1,u.lock/m.lockT),r=(30-12*k)*S,c=k>=1?'#b8f05a':'rgba(184,240,90,.8)';
+    ctx.strokeStyle=c;ctx.lineWidth=2;const L2=7*S;
+    [[-1,-1],[1,-1],[1,1],[-1,1]].forEach(([a,b])=>{ctx.beginPath();ctx.moveTo(g.x+a*r,g.y+b*(r-L2));ctx.lineTo(g.x+a*r,g.y+b*r);ctx.lineTo(g.x+a*(r-L2),g.y+b*r);ctx.stroke();});
+    ctx.setLineDash([4,6]);ctx.strokeStyle='rgba(184,240,90,.35)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(u.x,u.y);ctx.lineTo(g.x,g.y);ctx.stroke();ctx.setLineDash([]);}
+  if(u.st!=='out'){ctx.fillStyle='rgba(184,240,90,.9)';ctx.font='11px "Russo One",sans-serif';ctx.textAlign='center';ctx.fillText(m.name+' · '+u.ammo,u.x,u.y-30*S);}}
 
 function update(dt){
   t+=dt;phaseT+=dt;
@@ -1911,6 +2022,7 @@ function update(dt){
   hudT-=dt;if(hudT<=0){hudT=.15;paintBuffs();}
   if(phase==='intro'){if(phaseT>2.2){phase='fight';phaseT=0;}}
   else if(phase==='fight'){spawnT-=dt;if(spawnT<=0){spawnWave();spawnT=Math.max(.6,2-diff()*.9);}
+    samT-=dt;if(samT<=0){spawnSam();samT=rnd(10,15)/(1+(DL-1)*.12);}
     if(phaseT>fightLen){phase='boss';phaseT=0;setTimeout(()=>{if(running&&phase==='boss')spawnBoss();},1500);}}
   else if(phase==='clear'){
     if(phaseT>3.2&&phaseT<4.2)fade=Math.min(1,phaseT-3.2);
@@ -1957,7 +2069,8 @@ function update(dt){
       if(STAT.kills%25===0)checkAch();
       const ch=e.k==='boss'?1:e.k==='bomber'?.6:e.k==='heli'?.45:e.k==='fighter'?.12:.05;
       if(Math.random()<ch){const q=Math.random();let kind;
-        if(player.hp<player.max&&q<.22)kind='H';else if(q<.5)kind='P';else if(q<.64)kind='S';else if(q<.78)kind='B';else if(q<.9)kind='R';else kind='M';
+        if(grounds.length&&!uav&&!powers.some(p=>p.k==='U')&&Math.random()<.4)kind='U';
+        else if(player.hp<player.max&&q<.22)kind='H';else if(q<.5)kind='P';else if(q<.64)kind='S';else if(q<.78)kind='B';else if(q<.9)kind='R';else kind='M';
         powers.push({x:e.x,y:e.y,k:kind,t:0});}
       const gn={drone:.25,fighter:.6,bomber:1,heli:1,kami:.3,mine:.4}[e.k]||0;
       if(e.k==='boss')dropGold(e.x,e.y,isHard()?40:24);else if(Math.random()<gn)dropGold(e.x,e.y,e.k==='bomber'?4:e.k==='heli'?3:e.k==='fighter'?2:1);
@@ -1966,6 +2079,7 @@ function update(dt){
       enemies.splice(i,1);updateHud();continue;}
     if(e.y>H+80||e.y<-900||(e.k==='kami'&&e.dive&&(e.x<-60||e.x>W+60||e.y<-80)))enemies.splice(i,1);
   }
+  updateGround(dt);
   for(let i=eb.length-1;i>=0;i--){const b=eb[i];
     if(b.home>0){b.home-=dt;const a=Math.atan2(player.y-b.y,player.x-b.x),sp=Math.hypot(b.vx,b.vy),cur=Math.atan2(b.vy,b.vx);
       let da=a-cur;while(da>Math.PI)da-=TAU;while(da<-Math.PI)da+=TAU;const na=cur+Math.max(-2*dt,Math.min(2*dt,da));b.vx=Math.cos(na)*sp;b.vy=Math.sin(na)*sp;}
@@ -1989,6 +2103,7 @@ function update(dt){
       if(p.k==='H'){player.hp=Math.min(player.max,player.hp+1);if(UP.shield)player.shield=Math.max(player.shield,UP.shield*1.5);pops.push({x:p.x,y:p.y,txt:L('repair'),c:'#4be08a',life:1.2});SND.power();}
       if(p.k==='B'){if(player.bombs<maxBombs()){player.bombs++;pops.push({x:p.x,y:p.y,txt:L('bombup'),c:'#ff7a3a',life:1.2});}else{score+=300;pops.push({x:p.x,y:p.y,txt:'+300',c:'#ff7a3a',life:1.2});}SND.power();}
       if(p.k==='R'){player.rapid=8;pops.push({x:p.x,y:p.y,txt:L('b_rapid'),c:'#c77dff',life:1.2});SND.power();}
+      if(p.k==='U')callUav();
       if(p.k==='M'){player.magnet=10;pops.push({x:p.x,y:p.y,txt:L('b_magnet'),c:'#7df9ff',life:1.2});SND.power();}
       updateHud();continue;}
     if(p.y>H+30)powers.splice(i,1);}
@@ -2049,6 +2164,7 @@ function render(dt){
   ctx.save();
   if(shake>0&&SET.shake){const k=shake*16;ctx.translate(rnd(-k,k),rnd(-k,k));}
   drawBg(dt);
+  drawGrounds();
   golds.forEach(g=>drawGold(ctx,g));
   powers.forEach(p=>drawPower(ctx,p.x,p.y,p.k,14*S));
   enemies.forEach(e=>{if(e.k==='drone')drawDrone(ctx,e);else if(e.k==='fighter')drawFighter(ctx,e);else if(e.k==='bomber')drawBomber(ctx,e);
@@ -2062,6 +2178,7 @@ function render(dt){
   ctx.globalCompositeOperation='lighter';
   if(theme.light||theme.snow){ctx.globalCompositeOperation='source-over';pb.forEach(b=>{if(!b.missile)drawLaserBolt(b,true);});ctx.globalCompositeOperation='lighter';}
   pb.forEach(b=>{if(b.missile){drawMissile(b);return;}drawLaserBolt(b,false);});
+  uavM.forEach(b=>drawMissile(b));
   {const lt=!!(theme.light||theme.snow);ctx.globalCompositeOperation='source-over';
     eb.forEach(b=>{if(b.homing)drawEnemyRocket(b);else drawTracer(b,lt);});
     ctx.globalCompositeOperation='lighter';}
@@ -2071,6 +2188,7 @@ function render(dt){
   ctx.globalAlpha=1;
   rings.forEach(r=>{ctx.strokeStyle=r.col||'rgba(255,220,150,1)';ctx.globalAlpha=Math.max(0,r.life);ctx.lineWidth=3;ctx.beginPath();ctx.arc(r.x,r.y,r.r,0,TAU);ctx.stroke();});
   ctx.globalAlpha=1;
+  if(uav&&(running||paused))drawUav();
   if(player&&player.hp>0&&(running||paused)){
     if(!(player.inv>0&&Math.floor(t*14)%2))drawJet(ctx,player.x,player.y,S*1.05,player.bank,true,true);
     if(player.shield>0){const a=player.shield<2?(Math.sin(t*20)>0?.6:.15):.55;
@@ -2253,8 +2371,8 @@ Object.keys(SW).forEach(id=>$(id).addEventListener('click',()=>{const k=SW[id];S
 let resetArm=false;
 $('resetBtn').addEventListener('click',()=>{const b=$('resetBtn');
   if(!resetArm){resetArm=true;b.textContent=L('sure');setTimeout(()=>{resetArm=false;b.textContent=L('reset');},3000);return;}
-  ['kaanBest','kaanGems','kaanCoins','kaanOwned','kaanSel','kaanUp','kaanStat','kaanAch','kaanDaily','kaanHelped','kaanLogin'].forEach(k=>{try{localStorage.removeItem(k)}catch(e){}});
-  best=0;coins=0;gems=0;owned=['hurjet'].concat(TEST_UNLOCK);J=JETS[0];selId='hurjet';
+  ['kaanSihaOwned','kaanSihaSel','kaanBest','kaanGems','kaanCoins','kaanOwned','kaanSel','kaanUp','kaanStat','kaanAch','kaanDaily','kaanHelped','kaanLogin'].forEach(k=>{try{localStorage.removeItem(k)}catch(e){}});
+  best=0;coins=0;gems=0;owned=['hurjet'].concat(TEST_UNLOCK);J=JETS[0];selId='hurjet';sihaOwned=SIHAS.filter(m=>!m.price).map(m=>m.id);sihaSel=sihaOwned[0];
   UP={dmg:0,rate:0,hp:0,shield:0,bomb:0,magnet:0};STAT={kills:0,bosses:0,bombs:0,games:0,flawless:0,maxCombo:0,maxLevel:0,kami:0,golds:0};ACH={};
   store.set('kaanDaily',null);DAILY=loadDaily();LOGIN={last:null,streak:0};resetArm=false;b.textContent=L('resetdone');showBest();paintBadge();paintCoins();});
 $('toSettings').addEventListener('click',()=>{paintSet();paintLangs();openPanel(setEl);});
@@ -2273,7 +2391,7 @@ F35M.canard={x:0.14,y:0.165,z:-0.34,c:0.17,span:0.15,tc:0.05,sw:0.14,dh:0.01,th:
 Object.assign(JETS.find(j=>j.id==='kaan'),{noz3d:[-3.60,3.60],nozY3d:33.7,nozR3d:2.00});
 Object.assign(JETS.find(j=>j.id==='f22'),{noz3d:[-2.91,2.91],nozY3d:28.7,nozR3d:1.91});
 Object.assign(JETS.find(j=>j.id==='f35'),{noz3d:[0],nozY3d:30.5,nozR3d:2.86});
-Object.assign(JETS.find(j=>j.id==='tb2'),{noz3d:[],nozY3d:0,nozR3d:1}); // propeller drone: no afterburner flame
+Object.assign(SIHAS.find(j=>j.id==='tb2'),{noz3d:[],nozY3d:0,nozR3d:1}); // propeller drone: no afterburner flame
 // ---- Canards (small foreplanes behind the cockpit), generated as an extra 3D part ----
 // cfg: x/y/z = root leading-edge point (right side), c = root chord, span, tc = tip chord, sw = tip LE sweep back, dh = dihedral rise at tip, th = thickness, uv = body texture spot, mat
 function makeCanardGeo(cfg){
@@ -2447,27 +2565,35 @@ function build3DSprites(m,data){
 }
 
 // ================= HANGAR =================
-let hIdx=JETS.indexOf(J),confirmBuy=false;
+let hIdx=JETS.indexOf(J),confirmBuy=false,hgTab='jets';
+const HL=()=>hgTab==='siha'?SIHAS:JETS;
+const hgOwn=m=>hgTab==='siha'?sihaOwned.includes(m.id):owned.includes(m.id);
+const hgSel=m=>hgTab==='siha'?SIHA().id===m.id:J.id===m.id;
+function setHgTab(tb){hgTab=tb;hIdx=tb==='siha'?SIHAS.indexOf(SIHA()):JETS.indexOf(J);confirmBuy=false;
+  $('tabJets').classList.toggle('on',tb==='jets');$('tabSiha').classList.toggle('on',tb==='siha');
+  const one=HL().length<2;$('prev').style.visibility=$('next').style.visibility=one?'hidden':'';paintHangar();}
+$('tabJets').addEventListener('click',()=>{if(hgTab!=='jets'){SND.click();setHgTab('jets');}});
+$('tabSiha').addEventListener('click',()=>{if(hgTab!=='siha'){SND.click();setHgTab('siha');}});
 const hgC=$('hgJet').getContext('2d');
 const MAXFIRE=Math.max(...JETS.map(j=>j.dmg/j.rate));
-function openHangar(){SND.init();SND.resume();hgRot=0;hgPitch=.8;hIdx=JETS.indexOf(J);confirmBuy=false;showOnly(hangarEl);paintHangar();SND.click();}
+function openHangar(){SND.init();SND.resume();hgRot=0;hgPitch=.8;showOnly(hangarEl);setHgTab('jets');SND.click();}
 $('toHangar1').addEventListener('click',openHangar);
 $('hgBack').addEventListener('click',()=>{SND.click();showOnly(startEl);paintStart();});
-function go(d){hIdx=(hIdx+d+JETS.length)%JETS.length;confirmBuy=false;paintHangar();SND.click();}
+function go(d){const n=HL().length;hIdx=(hIdx+d+n)%n;confirmBuy=false;paintHangar();SND.click();}
 $('prev').addEventListener('click',()=>go(-1));$('next').addEventListener('click',()=>go(1));
 let hgRot=0,hgPitch=.8,hgDrag=null,hgDragY=0,hgIdle=0;const hgv=$('hgJet');
 hgv.addEventListener('pointerdown',e=>{hgDrag=e.clientX;hgDragY=e.clientY;hgIdle=0;try{hgv.setPointerCapture(e.pointerId)}catch(_){}e.stopPropagation();});
 hgv.addEventListener('pointermove',e=>{if(hgDrag===null)return;hgRot+=(e.clientX-hgDrag)*.012;hgPitch=Math.max(.2,Math.min(1.45,hgPitch+(e.clientY-hgDragY)*.006));hgDrag=e.clientX;hgDragY=e.clientY;hgIdle=0;});
 ['pointerup','pointercancel'].forEach(n=>hgv.addEventListener(n,()=>{hgDrag=null;}));
 function paintHangar(){
-  const m=JETS[hIdx],own=owned.includes(m.id);
+  const m=HL()[hIdx],own=hgOwn(m),sh=hgTab==='siha';
   $('hgName').textContent=m.name;$('lock').hidden=own;$('hint').hidden=false;$('hgDesc').textContent=L('j_'+m.id+'_d');
-  const bars=[[L('spd'),m.spd/1.35],[L('fire'),(m.dmg/m.rate)/MAXFIRE],[L('armor'),m.hp/5]];
+  const bars=sh?[[L('s_ammo'),m.ammo/8],[L('s_time'),m.dur/24],[L('s_lock'),Math.min(1,.45/m.lockT)]]:[[L('spd'),m.spd/1.35],[L('fire'),(m.dmg/m.rate)/MAXFIRE],[L('armor'),m.hp/5]];
   $('hgStats').innerHTML=bars.map(b=>'<span>'+b[0]+'</span><div class="bar"><b style="width:'+Math.round(b[1]*100)+'%"></b></div>').join('');
   $('hgSpecial').textContent=L('special',{x:L('j_'+m.id+'_s')});
-  $('dots').innerHTML=JETS.map((j,i)=>'<i class="'+(i===hIdx?'on ':'')+(owned.includes(j.id)?'own':'')+'"></i>').join('');
-  const b=$('hgAct'),g=$('hgGem'),gp=GEMP[m.id];b.disabled=false;b.className='btn';g.hidden=own||!gp;g.disabled=false;
-  if(own){if(J.id===m.id){b.textContent=L('selected');b.disabled=true;}else{b.textContent=L('select');b.className='btn alt';}}
+  $('dots').innerHTML=HL().map((j,i)=>'<i class="'+(i===hIdx?'on ':'')+(hgOwn(j)?'own':'')+'"></i>').join('');
+  const b=$('hgAct'),g=$('hgGem'),gp=sh?m.gem:GEMP[m.id];b.disabled=false;b.className='btn';g.hidden=own||!gp;g.disabled=false;
+  if(own){if(hgSel(m)){b.textContent=L('selected');b.disabled=true;}else{b.textContent=L('select');b.className='btn alt';}}
   else{
     if(coins>=m.price)b.textContent=confirmBuy==='c'?L('confirm',{x:fmt(m.price)}):L('ngold',{n:fmt(m.price)});
     else{b.textContent=L('goldshort',{n:fmt(m.price-coins)});b.disabled=true;}
@@ -2475,15 +2601,15 @@ function paintHangar(){
   paintCoins();
 }
 $('hgAct').addEventListener('click',()=>{
-  const m=JETS[hIdx];
-  if(owned.includes(m.id)){J=m;store.set('kaanSel',m.id);SND.click();paintHangar();return;}
+  const m=HL()[hIdx];
+  if(hgOwn(m)){if(hgTab==='siha'){sihaSel=m.id;store.set('kaanSihaSel',m.id);}else{J=m;store.set('kaanSel',m.id);}SND.click();paintHangar();return;}
   if(coins<m.price)return;
   if(confirmBuy!=='c'){confirmBuy='c';SND.click();paintHangar();return;}
   coins-=m.price;unlockJet(m);
 });
-function unlockJet(m){owned.push(m.id);J=m;store.set('kaanSel',m.id);saveAll();
+function unlockJet(m){if(SIHAS.includes(m)){sihaOwned.push(m.id);sihaSel=m.id;store.set('kaanSihaOwned',sihaOwned);store.set('kaanSihaSel',m.id);}else{owned.push(m.id);J=m;store.set('kaanSel',m.id);}saveAll();
   confirmBuy=false;SND.coin();setTimeout(()=>SND.fanfare(),200);checkAch();paintHangar();}
-$('hgGem').addEventListener('click',()=>{const m=JETS[hIdx],gp=GEMP[m.id];if(owned.includes(m.id)||!gp)return;
+$('hgGem').addEventListener('click',()=>{const m=HL()[hIdx],gp=hgTab==='siha'?m.gem:GEMP[m.id];if(hgOwn(m)||!gp)return;
   if(gems<gp){SND.click();openStore(L('needgems',{n:gp-gems}));return;}
   if(confirmBuy!=='g'){confirmBuy='g';SND.click();paintHangar();return;}
   gems-=gp;unlockJet(m);});
@@ -2500,7 +2626,7 @@ function drawHangar(dt){
   c.fillStyle='#f2b705';c.fillRect(w/2-4*k,8*k,8*k,50*k);
   c.fillStyle='#f2b705';for(let i=0;i<14;i++){c.save();c.translate(i*80*k-30*k,h-30*k);c.transform(1,0,-.6,1,0,0);c.fillRect(0,0,40*k,30*k);c.restore();}
   c.fillStyle='#111';c.fillRect(0,h-34*k,w,4*k);
-  const m=JETS[hIdx],own=owned.includes(m.id),sc=4.6*k,cx=w/2,cy=h*.47,sp=getSprite(m,12),U=sp.U;
+  const m=HL()[hIdx],own=hgOwn(m),sc=4.6*k,cx=w/2,cy=h*.47,sp=getSprite(m,12),U=sp.U;
   // ground shadow stays lit from the same side while the jet turns
   const has3d=!!MODELS3D[m.id],c3=$('hg3d');
   const VW=has3d?(HV[m.id]||(HV[m.id]=makeViewer())):null;
@@ -2532,7 +2658,7 @@ function checkLogin(){if(loginPending()&&!startEl.hidden&&!running)showLogin();}
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkLogin();});
 window.addEventListener('resize',resize);
 applyLang();resize();showBest();paintStart();paintBadge();checkLogin();
-setTimeout(()=>{for(const id in MODELS3D){const m=JETS.find(j=>j.id===id);if(m)build3DSprites(m,MODELS3D[id]);}},300);
+setTimeout(()=>{for(const id in MODELS3D){const m=JETS.find(j=>j.id===id)||SIHAS.find(j=>j.id===id);if(m)build3DSprites(m,MODELS3D[id]);}},300);
 setInterval(()=>{if(!startEl.hidden)drawStatic()},80);
 if(document.fonts)document.fonts.ready.then(drawStatic);
 requestAnimationFrame(loop);
