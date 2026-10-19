@@ -794,6 +794,8 @@ const SIHAS=[
 ];
 let sihaOwned=store.get('kaanSihaOwned',['tb2']),sihaSel=store.get('kaanSihaSel','tb2');
 SIHAS.forEach(m=>{if(!m.price&&!sihaOwned.includes(m.id))sihaOwned.push(m.id);});
+// TEST BUILD: every jet unlocked on the website (store app untouched)
+if(!APP){JETS.forEach(j=>{if(!TEST_UNLOCK.includes(j.id))TEST_UNLOCK.push(j.id);if(!owned.includes(j.id))owned.push(j.id);});SIHAS.forEach(m=>{if(!sihaOwned.includes(m.id))sihaOwned.push(m.id);});store.set('kaanOwned',owned);store.set('kaanSihaOwned',sihaOwned);}
 const SIHA=()=>SIHAS.find(m=>m.id===sihaSel&&sihaOwned.includes(m.id))||SIHAS[0];
 let J=JETS.find(j=>j.id===selId)||JETS[0];
 
