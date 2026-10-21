@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset=utf8><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><link rel="icon" type="image/png" href="icon-192.png"><meta name="theme-color" content="#0c1f33"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="KAĞAN"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><link rel="icon" type="image/png" href="icon-192.png"><meta name="theme-color" content="#0c1f33"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="KAĞAN"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>Kağan Gökyüzü Muhafızı</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Russo+One&family=Nunito:wght@700;800&display=swap">
@@ -10,7 +10,7 @@
   --body:"Nunito",system-ui,sans-serif;
   color-scheme:dark;
 }
-html,body{height:100%;margin:0;background:var(--deep);color:var(--ink);font-family:var(--body);overflow:hidden;
+html,body{touch-action:manipulation;height:100%;margin:0;background:var(--deep);color:var(--ink);font-family:var(--body);overflow:hidden;
   -webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 #wrap{position:relative;height:100%;width:100%;touch-action:none}
 canvas{display:block}
@@ -152,7 +152,7 @@ canvas{display:block}
   font-family:var(--display);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;touch-action:none}
 #bombBtn svg{width:26px;height:26px}
 #bombBtn span{font-size:.8rem;line-height:1}
-#bombBtn[disabled]{opacity:.35;border-color:rgba(255,255,255,.3)}
+#bombBtn.empty{opacity:.35;border-color:rgba(255,255,255,.3)}
 #pause{pointer-events:auto;cursor:pointer;color:var(--ink);font:inherit;padding:6px 8px}
 #pause svg{width:20px;height:20px;display:block}
 #toast{position:absolute;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 100px);transform:translateX(-50%);z-index:20;
@@ -280,7 +280,7 @@ canvas{display:block}
       <div class="card toggle"><div class="tx"><b><span data-i18n="vib">Titreşim</span></b><small><span data-i18n="vibd">Vurulunca telefon titrer</span></small></div><button class="sw" role="switch" id="swVib"></button></div>
       <div class="card toggle"><div class="tx"><b><span data-i18n="shake">Ekran sarsıntısı</span></b><small><span data-i18n="shaked">Patlamalarda ekran sallanır</span></small></div><button class="sw" role="switch" id="swShake"></button></div>
       <div class="card"><div class="tx"><b><span data-i18n="resett">İlerlemeyi sıfırla</span></b><small><span data-i18n="resetd">Altın, elmas, uçaklar, yükseltmeler ve başarımlar silinir</span></small></div><button class="sbtn" id="resetBtn" style="background:#5a1a1f;color:#ffb3b8"><span data-i18n="reset">SIFIRLA</span></button></div>
-      <p class="small" style="text-align:center"><span data-i18n="version">Sürüm 2.7</span></p>
+      <p class="small" style="text-align:center"><span data-i18n="version">Sürüm 3.1</span></p>
       <button class="btn ghost" data-back style="align-self:center"><span data-i18n="back">GERİ</span></button>
     </div>
   </div>
@@ -527,7 +527,7 @@ const I18N_SRC={
  reset:['SIFIRLA','RESET','重置','REINICIAR','EFFACER','LÖSCHEN','СБРОС'],
  sure:['EMİN MİSİN?','ARE YOU SURE?','确定吗？','¿SEGURO?','SÛR ?','SICHER?','ТОЧНО?'],
  resetdone:['SIFIRLANDI','DONE','已重置','HECHO','FAIT','ERLEDIGT','ГОТОВО'],
- version:['Sürüm 3.0','Version 3.0','版本 3.0','Versión 3.0','Version 3.0','Version 3.0','Версия 3.0'],
+ version:['Sürüm 3.1','Version 3.1','版本 3.1','Versión 3.1','Version 3.1','Version 3.1','Версия 3.1'],
  back:['GERİ','BACK','返回','ATRÁS','RETOUR','ZURÜCK','НАЗАД'],
  ok:['TAMAM','OK','好的','VALE','OK','OK','ОК'],
  how:['NASIL OYNANIR','HOW TO PLAY','玩法说明','CÓMO JUGAR','COMMENT JOUER','SO WIRD GESPIELT','КАК ИГРАТЬ'],
@@ -1845,7 +1845,7 @@ function updateHud(){
   $('score').textContent=score.toLocaleString(LOCALE);$('pw').textContent=L('pw',{n:player.power});$('lv').textContent=L('lv',{n:level});$('lv').style.color=isHard()?'#ff5a5a':'';
   let h='';for(let i=0;i<player.max;i++)h+='<svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.6 4.5c2.1 0 3.6 1.2 5.4 3.2 1.8-2 3.3-3.2 5.4-3.2 3.6 0 5.7 3.9 4.2 7.3C19.5 16.4 12 21 12 21z" fill="'+(i<player.hp?'#e30a17':'rgba(255,255,255,.15)')+'" stroke="'+(i<player.hp?'#ffb3b8':'rgba(255,255,255,.3)')+'" stroke-width="1.2"/></svg>';
   $('hp').innerHTML=h;
-  $('bombN').textContent=player.bombs;$('bombBtn').disabled=player.bombs<=0;
+  $('bombN').textContent=player.bombs;$('bombBtn').classList.toggle('empty',player.bombs<=0);
   paintBuffs();
 }
 function paintBuffs(){
@@ -1990,11 +1990,12 @@ function updateGround(dt){const fm=1+(DL-1)*.15;
     if(uav)u.bank+=(((u.x-px)/Math.max(dt,.001))/700-u.bank)*Math.min(1,dt*6),u.bank=Math.max(-.5,Math.min(.5,u.bank));}
   for(let i=uavM.length-1;i>=0;i--){const b=uavM[i];b.life-=dt;
     if(b.tg&&!grounds.includes(b.tg))b.tg=grounds.find(g=>g.y>0&&g.y<H)||null;
-    if(b.tg){const a=Math.atan2(b.tg.y-b.y,b.tg.x-b.x);b.vx+=Math.cos(a)*1100*dt;b.vy+=Math.sin(a)*1100*dt;}
-    const sp=Math.hypot(b.vx,b.vy);if(sp>430){b.vx*=430/sp;b.vy*=430/sp;}
+    if(b.tg){b.age=(b.age||0)+dt;const a=Math.atan2(b.tg.y-b.y,b.tg.x-b.x),v=Math.min(560,200+b.age*700),k=Math.min(1,dt*(4+b.age*10));
+      b.vx+=(Math.cos(a)*v-b.vx)*k;b.vy+=(Math.sin(a)*v-b.vy)*k;}
+    else{const sp=Math.hypot(b.vx,b.vy);if(sp>430){b.vx*=430/sp;b.vy*=430/sp;}}
     b.x+=b.vx*dt;b.y+=b.vy*dt;if(Math.random()<.7)parts.push({x:b.x,y:b.y,vx:rnd(-10,10),vy:rnd(-10,10),life:.6,dec:1.5,r:3,c:'smoke'});
-    if(b.tg&&Math.hypot(b.tg.x-b.x,b.tg.y-b.y)<9*S){killSam(b.tg,true);uavM.splice(i,1);continue;}
-    if(b.life<=0||b.y<-40||b.y>H+40){uavM.splice(i,1);}}
+    if(b.tg&&Math.hypot(b.tg.x-b.x,b.tg.y-b.y)<15*S){killSam(b.tg,true);uavM.splice(i,1);continue;}
+    if(b.life<=0||b.y<-40||b.y>H+40){if(b.tg)b.tg.claimed=0;uavM.splice(i,1);}}
 }
 function callUav(){const m=SIHA();
   if(uav&&uav.st!=='out'){uav.ammo=m.ammo;uav.life=m.dur;}
@@ -2267,6 +2268,10 @@ $('resume').addEventListener('click',()=>{SND.click();resumeGame();});
 $('pSettings').addEventListener('click',()=>{paintSet();paintLangs();openPanel(setEl);});
 $('quit').addEventListener('click',()=>{paused=false;running=false;SND.engine(false);MUS.stop();$('bombBtn').hidden=true;$('combo').hidden=true;$('buffs').innerHTML='';end();});
 const bb=$('bombBtn');bb.addEventListener('pointerdown',e=>{e.stopPropagation();e.preventDefault();useBomb();});
+// iPhone: block double-tap and pinch zoom so the battlefield never gets stuck zoomed in
+['touchstart','touchend'].forEach(ev=>bb.addEventListener(ev,e=>e.preventDefault(),{passive:false}));
+let lastTouchEnd=0;document.addEventListener('touchend',e=>{const n=Date.now();if(n-lastTouchEnd<350&&(running||e.target===bb))e.preventDefault();lastTouchEnd=n;},{passive:false});
+['gesturestart','gesturechange','dblclick'].forEach(ev=>document.addEventListener(ev,e=>e.preventDefault(),{passive:false}));
 function clearField(){enemies=[];eb=[];pb=[];powers=[];golds=[];lasers=[];pops=[];banner=null;fade=0;flashT=0;bombFlash=0;}
 function end(){hud.hidden=true;SND.over();$('bombBtn').hidden=true;banner=null;lasers=[];
   track('score',score,true);
