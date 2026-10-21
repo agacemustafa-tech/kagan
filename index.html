@@ -225,7 +225,12 @@ canvas{display:block}
   <div class="overlay" id="shopEl" hidden>
     <div class="panel">
       <div class="hgHead" style="max-width:none"><h2><span data-i18n="workshop">ATÖLYE</span></h2><div class="wallet"><div class="coins"><i class="coin"></i><span class="coinVal">0</span></div><div class="coins gem"><i class="gemI"></i><span class="gemVal">0</span></div></div></div>
-      <p class="small" style="text-align:center"><span data-i18n="shopnote">Yükseltmeler tüm uçaklarda geçerlidir.</span></p>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+        <button class="arrow" id="shPrev" style="position:static;transform:none;flex:none" aria-label="Önceki uçak" data-i18n-aria="ar_prev">‹</button>
+        <div style="flex:1;min-width:0;text-align:center"><canvas id="shJetC" width="240" height="240" style="width:72px;height:72px;display:block;margin:0 auto"></canvas><div id="shJet" style="font-family:var(--display);letter-spacing:.12em;color:var(--gold)"></div></div>
+        <button class="arrow" id="shNext" style="position:static;transform:none;flex:none" aria-label="Sonraki uçak" data-i18n-aria="ar_next">›</button>
+      </div>
+      <p class="small" style="text-align:center" id="shNote"></p>
       <div id="shopList" style="display:flex;flex-direction:column;gap:10px"></div>
       <button class="btn ghost" data-back style="align-self:center"><span data-i18n="back">GERİ</span></button>
     </div>
@@ -280,7 +285,7 @@ canvas{display:block}
       <div class="card toggle"><div class="tx"><b><span data-i18n="vib">Titreşim</span></b><small><span data-i18n="vibd">Vurulunca telefon titrer</span></small></div><button class="sw" role="switch" id="swVib"></button></div>
       <div class="card toggle"><div class="tx"><b><span data-i18n="shake">Ekran sarsıntısı</span></b><small><span data-i18n="shaked">Patlamalarda ekran sallanır</span></small></div><button class="sw" role="switch" id="swShake"></button></div>
       <div class="card"><div class="tx"><b><span data-i18n="resett">İlerlemeyi sıfırla</span></b><small><span data-i18n="resetd">Altın, elmas, uçaklar, yükseltmeler ve başarımlar silinir</span></small></div><button class="sbtn" id="resetBtn" style="background:#5a1a1f;color:#ffb3b8"><span data-i18n="reset">SIFIRLA</span></button></div>
-      <p class="small" style="text-align:center"><span data-i18n="version">Sürüm 3.2</span></p>
+      <p class="small" style="text-align:center"><span data-i18n="version">Sürüm 3.3</span></p>
       <button class="btn ghost" data-back style="align-self:center"><span data-i18n="back">GERİ</span></button>
     </div>
   </div>
@@ -375,7 +380,7 @@ const I18N_SRC={
  resume:['DEVAM','RESUME','继续','CONTINUAR','REPRENDRE','WEITER','ПРОДОЛЖИТЬ'],
  quit:['GÖREVİ BIRAK','ABANDON','放弃任务','ABANDONAR','ABANDONNER','ABBRECHEN','ПОКИНУТЬ БОЙ'],
  pinfo:['Bölüm {lv} • {n} puan','Level {lv} • {n} points','第 {lv} 关 • {n} 分','Nivel {lv} • {n} puntos','Niveau {lv} • {n} points','Level {lv} • {n} Punkte','Уровень {lv} • {n} очков'],
- shopnote:['Yükseltmeler tüm uçaklarda geçerlidir.','Upgrades apply to every aircraft.','升级适用于所有战机。','Las mejoras se aplican a todos los aviones.','Les améliorations s\'appliquent à tous les avions.','Upgrades gelten für alle Flugzeuge.','Улучшения действуют на все самолёты.'],
+ shopnote:['Bu yükseltmeler yalnızca {x} için geçerli. Okla diğer uçaklarını seç.','These upgrades apply only to {x}. Use the arrows to pick another aircraft.','这些升级仅适用于 {x}。用箭头选择其他战机。','Estas mejoras solo se aplican a {x}. Usa las flechas para elegir otro avión.','Ces améliorations ne valent que pour {x}. Utilisez les flèches pour choisir un autre avion.','Diese Upgrades gelten nur für {x}. Mit den Pfeilen ein anderes Flugzeug wählen.','Эти улучшения действуют только для {x}. Стрелками выберите другой самолёт.'],
  max:['TAM','MAX','满级','MÁX','MAX','MAX','МАКС'],
  up_dmg_n:['Mühimmat','Ammunition','弹药','Munición','Munitions','Munition','Боеприпасы'],
  up_dmg_d:['Her mermi %10 daha fazla hasar','+10% damage per bullet','每发子弹伤害 +10%','+10% de daño por bala','+10 % de dégâts par balle','+10 % Schaden pro Kugel','+10% урона каждой пули'],
@@ -527,7 +532,7 @@ const I18N_SRC={
  reset:['SIFIRLA','RESET','重置','REINICIAR','EFFACER','LÖSCHEN','СБРОС'],
  sure:['EMİN MİSİN?','ARE YOU SURE?','确定吗？','¿SEGURO?','SÛR ?','SICHER?','ТОЧНО?'],
  resetdone:['SIFIRLANDI','DONE','已重置','HECHO','FAIT','ERLEDIGT','ГОТОВО'],
- version:['Sürüm 3.2','Version 3.2','版本 3.2','Versión 3.2','Version 3.2','Version 3.2','Версия 3.2'],
+ version:['Sürüm 3.3','Version 3.3','版本 3.3','Versión 3.3','Version 3.3','Version 3.3','Версия 3.3'],
  back:['GERİ','BACK','返回','ATRÁS','RETOUR','ZURÜCK','НАЗАД'],
  ok:['TAMAM','OK','好的','VALE','OK','OK','ОК'],
  how:['NASIL OYNANIR','HOW TO PLAY','玩法说明','CÓMO JUGAR','COMMENT JOUER','SO WIRD GESPIELT','КАК ИГРАТЬ'],
@@ -622,7 +627,12 @@ if(!store.get('kaanKaan3dPick',0)){selId='kaan';store.set('kaanSel','kaan');stor
 // ---- v2 persistent data ----
 const SET=Object.assign({sfx:true,mus:true,vib:true,shake:true},store.get('kaanSet',{}));
 if(store.get('kaanMute',false)===true){SET.sfx=false;SET.mus=false;}
-let UP=Object.assign({dmg:0,rate:0,hp:0,shield:0,bomb:0,magnet:0},store.get('kaanUp',{}));
+// workshop upgrades are kept per aircraft: UPS[jetId] = {dmg,rate,hp,shield,bomb,magnet}
+const UP0=()=>({dmg:0,rate:0,hp:0,shield:0,bomb:0,magnet:0});
+let UPS=store.get('kaanUps',null);
+if(!UPS){UPS={};const old=store.get('kaanUp',null);if(old)owned.forEach(id=>{UPS[id]=Object.assign(UP0(),old);});store.set('kaanUps',UPS);}
+function upFor(id){if(!UPS[id])UPS[id]=UP0();return UPS[id];}
+let UP=UP0(); // upgrades of the aircraft being flown (set once J is known)
 let STAT=Object.assign({kills:0,bosses:0,bombs:0,games:0,flawless:0,maxCombo:0,maxLevel:0,kami:0,golds:0},store.get('kaanStat',{}));
 let ACH=store.get('kaanAch',{});
 const UPG=[
@@ -666,7 +676,7 @@ const ACHS=[
  {id:'fleet5',name:'Filo Kuruluşu',desc:'5 farklı uçağa sahip ol',rw:1000,gem:15,ic:'plane',test:()=>owned.length>=5},
  {id:'kaan',name:'Milli Pilot',desc:'Göklerin hükümdarı, filonun efsanesi. En hızlı ateş, en güçlü zırh.',rw:2000,gem:25,ic:'plane',test:()=>owned.includes('kaan')},
  {id:'fleet',name:'Filo Komutanı',desc:'Tüm uçakları topla',rw:5000,gem:25,ic:'star',test:()=>owned.length>=JETS.length},
- {id:'maxup',name:'Usta Teknisyen',desc:'Bir yükseltmeyi sona kadar çıkar',rw:1000,gem:15,ic:'bolt',test:()=>UPG.some(u=>UP[u.id]>=u.max)}
+ {id:'maxup',name:'Usta Teknisyen',desc:'Bir yükseltmeyi sona kadar çıkar',rw:1000,gem:15,ic:'bolt',test:()=>Object.values(UPS).some(up=>UPG.some(u=>up[u.id]>=u.max))}
 ];
 // daily missions: pool, 3 picked per day by date seed
 const MPOOL=[
@@ -697,7 +707,7 @@ const LOGIN_RW=[{c:100},{c:150},{c:200},{c:300},{c:400},{c:600},{g:10}];
 let LOGIN=store.get('kaanLogin',null)||{last:null,streak:0};
 function loginPending(){return LOGIN.last!==dayKey();}
 function loginNext(){const y=new Date();y.setDate(y.getDate()-1);return LOGIN.last===dayKey(y)?(LOGIN.streak%7)+1:1;}
-function saveAll(){store.set('kaanCoins',coins);store.set('kaanGems',gems);store.set('kaanUp',UP);store.set('kaanStat',STAT);store.set('kaanAch',ACH);store.set('kaanDaily',DAILY);store.set('kaanOwned',owned);}
+function saveAll(){store.set('kaanCoins',coins);store.set('kaanGems',gems);store.set('kaanUps',UPS);store.set('kaanStat',STAT);store.set('kaanAch',ACH);store.set('kaanDaily',DAILY);store.set('kaanOwned',owned);}
 // run counters feed daily missions
 let RUN=null;
 function newRun(){RUN={kills:0,bosses:0,level:1,score:0,bombs:0,combo:0,pows:0,golds:0,kami:0,flawless:0,heli:0,maxCombo:0,done:[]};}
@@ -797,7 +807,7 @@ SIHAS.forEach(m=>{if(!m.price&&!sihaOwned.includes(m.id))sihaOwned.push(m.id);})
 // TEST BUILD: every jet unlocked on the website (store app untouched)
 if(!APP){JETS.forEach(j=>{if(!TEST_UNLOCK.includes(j.id))TEST_UNLOCK.push(j.id);if(!owned.includes(j.id))owned.push(j.id);});SIHAS.forEach(m=>{if(!sihaOwned.includes(m.id))sihaOwned.push(m.id);});store.set('kaanOwned',owned);store.set('kaanSihaOwned',sihaOwned);}
 const SIHA=()=>SIHAS.find(m=>m.id===sihaSel&&sihaOwned.includes(m.id))||SIHAS[0];
-let J=JETS.find(j=>j.id===selId)||JETS[0];
+let J=JETS.find(j=>j.id===selId)||JETS[0];UP=upFor(J.id);
 
 function flag(c,x,y,s,rot){
   c.save();c.translate(x,y);c.rotate(rot||0);c.fillStyle='#e30a17';c.fillRect(-6*s,-4*s,12*s,8*s);
@@ -2349,17 +2359,24 @@ $('langSet').addEventListener('click',()=>{paintLangs();openPanel(langEl);});
 function onLangChange(){showBest();paintStart();if(!shopEl.hidden)paintShop();if(!misEl.hidden)paintMis();if(!storeEl.hidden)paintStore();if(!hangarEl.hidden)paintHangar();if(player&&!hud.hidden)updateHud();}
 
 // ---- Atölye (upgrades) ----
+let shopId=null;
+function shopJets(){return JETS.filter(m=>owned.includes(m.id));}
 function paintShop(){
-  $('shopList').innerHTML=UPG.map(u=>{const lv=UP[u.id],mx=lv>=u.max,c=mx?0:u.cost[lv];
+  const list=shopJets();if(!list.some(m=>m.id===shopId))shopId=J.id;const m=JETS.find(x=>x.id===shopId)||J,UPx=upFor(m.id);
+  $('shJet').textContent=m.name;$('shNote').textContent=L('shopnote',{x:m.name});$('shPrev').hidden=$('shNext').hidden=list.length<2;
+  {const h=$('shJetC').getContext('2d');h.clearRect(0,0,240,240);drawJet(h,120,120,2.1,0,true,false,m);}
+  $('shopList').innerHTML=UPG.map(u=>{const lv=UPx[u.id],mx=lv>=u.max,c=mx?0:u.cost[lv];
     return '<div class="card'+(mx?' done':'')+'"><div class="ic">'+svgI(u.ic)+'</div><div class="tx"><b>'+L('up_'+u.id+'_n')+'</b><small>'+L('up_'+u.id+'_d')+'</small>'+
       '<div class="lv">'+Array.from({length:u.max},(_,i)=>'<i class="'+(i<lv?'on':'')+'"></i>').join('')+'</div></div>'+
       '<button class="sbtn'+(mx?' ok':'')+'" data-up="'+u.id+'"'+(mx||coins<c?' disabled':'')+'>'+(mx?L('max'):fmt(c))+'</button></div>';}).join('');
   paintCoins();
 }
 $('shopList').addEventListener('click',e=>{const b=e.target.closest('[data-up]');if(!b||b.disabled)return;
-  const u=UPG.find(x=>x.id===b.dataset.up),lv=UP[u.id];if(lv>=u.max)return;const c=u.cost[lv];if(coins<c)return;
-  coins-=c;UP[u.id]++;SND.coin();saveAll();checkAch();paintShop();});
-$('toShop').addEventListener('click',()=>{paintShop();openPanel(shopEl);});
+  const UPx=upFor(shopId||J.id),u=UPG.find(x=>x.id===b.dataset.up),lv=UPx[u.id];if(lv>=u.max)return;const c=u.cost[lv];if(coins<c)return;
+  coins-=c;UPx[u.id]++;SND.coin();saveAll();checkAch();paintShop();});
+function shopStep(d){const list=shopJets();if(list.length<2)return;let i=list.findIndex(m=>m.id===shopId);i=(i+d+list.length)%list.length;shopId=list[i].id;SND.click();paintShop();}
+$('shPrev').addEventListener('click',()=>shopStep(-1));$('shNext').addEventListener('click',()=>shopStep(1));
+$('toShop').addEventListener('click',()=>{shopId=J.id;paintShop();openPanel(shopEl);});
 
 // ---- Görevler / Başarımlar ----
 let misTab='daily';
@@ -2393,9 +2410,9 @@ Object.keys(SW).forEach(id=>$(id).addEventListener('click',()=>{const k=SW[id];S
 let resetArm=false;
 $('resetBtn').addEventListener('click',()=>{const b=$('resetBtn');
   if(!resetArm){resetArm=true;b.textContent=L('sure');setTimeout(()=>{resetArm=false;b.textContent=L('reset');},3000);return;}
-  ['kaanSihaOwned','kaanSihaSel','kaanBest','kaanGems','kaanCoins','kaanOwned','kaanSel','kaanUp','kaanStat','kaanAch','kaanDaily','kaanHelped','kaanLogin'].forEach(k=>{try{localStorage.removeItem(k)}catch(e){}});
+  ['kaanSihaOwned','kaanSihaSel','kaanBest','kaanGems','kaanCoins','kaanOwned','kaanSel','kaanUp','kaanUps','kaanStat','kaanAch','kaanDaily','kaanHelped','kaanLogin'].forEach(k=>{try{localStorage.removeItem(k)}catch(e){}});
   best=0;coins=0;gems=0;owned=['hurjet'].concat(TEST_UNLOCK);J=JETS[0];selId='hurjet';sihaOwned=SIHAS.filter(m=>!m.price).map(m=>m.id);sihaSel=sihaOwned[0];
-  UP={dmg:0,rate:0,hp:0,shield:0,bomb:0,magnet:0};STAT={kills:0,bosses:0,bombs:0,games:0,flawless:0,maxCombo:0,maxLevel:0,kami:0,golds:0};ACH={};
+  UPS={};UP=upFor(J.id);STAT={kills:0,bosses:0,bombs:0,games:0,flawless:0,maxCombo:0,maxLevel:0,kami:0,golds:0};ACH={};
   store.set('kaanDaily',null);DAILY=loadDaily();LOGIN={last:null,streak:0};resetArm=false;b.textContent=L('resetdone');showBest();paintBadge();paintCoins();});
 $('toSettings').addEventListener('click',()=>{paintSet();paintLangs();openPanel(setEl);});
 $('toHelp').addEventListener('click',()=>openPanel(helpEl));
@@ -2640,12 +2657,12 @@ function paintHangar(){
 }
 $('hgAct').addEventListener('click',()=>{
   const m=HL()[hIdx];
-  if(hgOwn(m)){if(hgTab==='siha'){sihaSel=m.id;store.set('kaanSihaSel',m.id);}else{J=m;store.set('kaanSel',m.id);}SND.click();paintHangar();return;}
+  if(hgOwn(m)){if(hgTab==='siha'){sihaSel=m.id;store.set('kaanSihaSel',m.id);}else{J=m;UP=upFor(m.id);store.set('kaanSel',m.id);}SND.click();paintHangar();return;}
   if(coins<m.price)return;
   if(confirmBuy!=='c'){confirmBuy='c';SND.click();paintHangar();return;}
   coins-=m.price;unlockJet(m);
 });
-function unlockJet(m){if(SIHAS.includes(m)){sihaOwned.push(m.id);sihaSel=m.id;store.set('kaanSihaOwned',sihaOwned);store.set('kaanSihaSel',m.id);}else{owned.push(m.id);J=m;store.set('kaanSel',m.id);}saveAll();
+function unlockJet(m){if(SIHAS.includes(m)){sihaOwned.push(m.id);sihaSel=m.id;store.set('kaanSihaOwned',sihaOwned);store.set('kaanSihaSel',m.id);}else{owned.push(m.id);J=m;UP=upFor(m.id);store.set('kaanSel',m.id);}saveAll();
   confirmBuy=false;SND.coin();setTimeout(()=>SND.fanfare(),200);checkAch();paintHangar();}
 $('hgGem').addEventListener('click',()=>{const m=HL()[hIdx],gp=hgTab==='siha'?m.gem:GEMP[m.id];if(hgOwn(m)||!gp)return;
   if(gems<gp){SND.click();openStore(L('needgems',{n:gp-gems}));return;}
