@@ -285,7 +285,7 @@ canvas{display:block}
       <div class="card toggle"><div class="tx"><b><span data-i18n="vib">Titreşim</span></b><small><span data-i18n="vibd">Vurulunca telefon titrer</span></small></div><button class="sw" role="switch" id="swVib"></button></div>
       <div class="card toggle"><div class="tx"><b><span data-i18n="shake">Ekran sarsıntısı</span></b><small><span data-i18n="shaked">Patlamalarda ekran sallanır</span></small></div><button class="sw" role="switch" id="swShake"></button></div>
       <div class="card"><div class="tx"><b><span data-i18n="resett">İlerlemeyi sıfırla</span></b><small><span data-i18n="resetd">Altın, elmas, uçaklar, yükseltmeler ve başarımlar silinir</span></small></div><button class="sbtn" id="resetBtn" style="background:#5a1a1f;color:#ffb3b8"><span data-i18n="reset">SIFIRLA</span></button></div>
-      <p class="small" style="text-align:center"><span data-i18n="version">Sürüm 3.3</span></p>
+      <p class="small" style="text-align:center"><span data-i18n="version">Sürüm 3.4</span></p>
       <button class="btn ghost" data-back style="align-self:center"><span data-i18n="back">GERİ</span></button>
     </div>
   </div>
@@ -479,6 +479,9 @@ const I18N_SRC={
  uav_out:['{x} ÜSSE DÖNÜYOR','{x} RETURNING TO BASE','{x} 返航','{x} REGRESA A LA BASE','{x} RENTRE À LA BASE','{x} KEHRT ZURÜCK','{x} ВОЗВРАЩАЕТСЯ НА БАЗУ'],
  sam_warn:['HAVA SAVUNMASI!','AIR DEFENCE!','防空警报！','¡ANTIAÉREO!','DÉFENSE SOL-AIR !','FLUGABWEHR!','ПВО!'],
  sam_kill:['SAVUNMA İMHA','SAM DOWN','防空已摧毁','SAM DESTRUIDO','SAM DÉTRUIT','SAM ZERSTÖRT','ПВО УНИЧТОЖЕНА'],
+ flare:['IŞIK FİŞEĞİ!','FLARES!','诱饵弹！','¡BENGALAS!','LEURRES !','FACKELN!','ЛТЦ!'],
+ b_flare:['FİŞEK','FLARE','诱饵','BENGALA','LEURRE','FACKEL','ЛТЦ'],
+ flr_sp:['Güdümlü füzelere karşı {n} ışık fişeği','{n} flares against guided missiles','{n} 枚诱饵弹对抗制导导弹','{n} bengalas contra misiles guiados','{n} leurres contre les missiles guidés','{n} Täuschkörper gegen Lenkflugkörper','{n} ЛТЦ против управляемых ракет'],
  b_uav:['İHA','DRONE','无人机','DRON','DRONE','DROHNE','БПЛА'],
  s_ammo:['FÜZE','MISSILES','导弹','MISILES','MISSILES','RAKETEN','РАКЕТЫ'],
  s_time:['SÜRE','ENDURANCE','续航','AUTONOMÍA','ENDURANCE','AUSDAUER','ВРЕМЯ'],
@@ -532,7 +535,7 @@ const I18N_SRC={
  reset:['SIFIRLA','RESET','重置','REINICIAR','EFFACER','LÖSCHEN','СБРОС'],
  sure:['EMİN MİSİN?','ARE YOU SURE?','确定吗？','¿SEGURO?','SÛR ?','SICHER?','ТОЧНО?'],
  resetdone:['SIFIRLANDI','DONE','已重置','HECHO','FAIT','ERLEDIGT','ГОТОВО'],
- version:['Sürüm 3.3','Version 3.3','版本 3.3','Versión 3.3','Version 3.3','Version 3.3','Версия 3.3'],
+ version:['Sürüm 3.4','Version 3.4','版本 3.4','Versión 3.4','Version 3.4','Version 3.4','Версия 3.4'],
  back:['GERİ','BACK','返回','ATRÁS','RETOUR','ZURÜCK','НАЗАД'],
  ok:['TAMAM','OK','好的','VALE','OK','OK','ОК'],
  how:['NASIL OYNANIR','HOW TO PLAY','玩法说明','CÓMO JUGAR','COMMENT JOUER','SO WIRD GESPIELT','КАК ИГРАТЬ'],
@@ -765,31 +768,31 @@ const JETS=[
   pts:[[0,-46],[1.8,-41],[3,-33],[3.8,-25],[4.2,-21],[10.5,-19],[10.5,-4],[12,-2],[34,12],[34,17.5],[12.5,18],[12,22],[26,29],[25,34],[10.5,32],[8,38],[0.6,38],[0,37]],
   tails:{t:'vert',x:9.6,y0:11,y1:32},canopy:{y0:-37,y1:-20,w:3.4,tint:'clear'},intake:[[4.4,-21],[10.4,-19.2],[10.4,-16.5],[4.4,-18.6]],
   noz:[-4,4],nozY:37,nozR:3.2,col:['#b7c0ca','#dde3e8','#a7b1bb'],le:[[12,-2],[34,12]],flag:[-22,12.5],nav:[34,15]},
- {id:'su35',name:'KASIRGA',desc:'Fırtına gibi döner, rüzgâr gibi kaçar. Mermilerin arasından dans eder.',price:45000,hp:4,rate:.11,dmg:1.15,spd:1.35,startP:1,special:'Çok hızlı manevra: mermilerin arasından süzülür.',
+ {id:'su35',flr:3,name:'KASIRGA',desc:'Fırtına gibi döner, rüzgâr gibi kaçar. Mermilerin arasından dans eder.',price:45000,hp:4,rate:.11,dmg:1.15,spd:1.35,startP:1,special:'Çok hızlı manevra: mermilerin arasından süzülür.',
   pts:[[0,-52],[1.8,-46],[3,-38],[4,-30],[5.2,-22],[8,-12],[12,-5],[14,-2],[35,12],[35,16.5],[15,17.5],[14,21],[27,29],[27,33],[13,31.5],[11,38],[7,38],[4,33],[2.4,36],[1.5,44],[0,44]],
   tails:{t:'vert',x:12,y0:11,y1:31},canopy:{y0:-41,y1:-24,w:3.4,tint:'clear'},intake:null,
   noz:[-9,9],nozY:37,nozR:3.2,col:['#b3c3d3','#d9e3ec','#a3b5c7'],camo:'#3e5670',le:[[14,-2],[35,12]],flag:[-23,12.5],nav:[35,14]},
- {id:'rafale',name:'ŞİMŞEK',desc:'Gökyüzünü yaran bir yıldırım. Çevik kanatları ve erken füzeleriyle şaşırtır.',price:60000,hp:4,rate:.1,dmg:1.2,spd:1.3,startP:1,miss:2,special:'Kanard çevikliği ve erken füze.',
+ {id:'rafale',flr:3,name:'ŞİMŞEK',desc:'Gökyüzünü yaran bir yıldırım. Çevik kanatları ve erken füzeleriyle şaşırtır.',price:60000,hp:4,rate:.1,dmg:1.2,spd:1.3,startP:1,miss:2,special:'Kanard çevikliği ve erken füze.',
   pts:[[0,-46],[1.6,-40],[3,-32],[4,-24],[4.8,-18],[6,-17],[13.5,-11],[13.5,-9],[6.6,-10],[7.2,-6],[8,-3],[29,20],[29.3,22.5],[10,24],[8,27],[6.8,31.5],[1.5,31.5],[0,31]],
   tails:{t:'single',y0:4,y1:32},canopy:{y0:-36,y1:-18,w:3.2,tint:'clear'},intake:[[5.4,-8],[7.4,-6],[7.6,-2],[5.6,-4]],
   noz:[-3.6,3.6],nozY:31,nozR:3,col:['#b4bbc2','#dce0e4','#a6aeb5'],le:[[8,-3],[29,20]],flag:[-19,14],nav:[29.2,21]},
- {id:'typhoon',name:'TAYFUN',desc:'Okyanus fırtınalarından doğdu. Ağır silah yüküyle savaşa tam güçte girer.',price:60000,hp:4,rate:.1,dmg:1.25,spd:1.25,startP:2,special:'Ağır silah yükü: 2. güçle başlar.',
+ {id:'typhoon',flr:3,name:'TAYFUN',desc:'Okyanus fırtınalarından doğdu. Ağır silah yüküyle savaşa tam güçte girer.',price:60000,hp:4,rate:.1,dmg:1.25,spd:1.25,startP:2,special:'Ağır silah yükü: 2. güçle başlar.',
   pts:[[0,-48],[1.6,-42],[3,-34],[4,-28],[4.4,-27],[13,-20.5],[13,-18],[5,-19],[5.6,-12],[7,-4],[8,0],[31,22],[31.4,25],[10,25.5],[8.5,29],[7.6,33],[1.5,33],[0,32]],
   tails:{t:'single',y0:6,y1:33},canopy:{y0:-39,y1:-21,w:3.2,tint:'clear'},intake:null,
   noz:[-3.8,3.8],nozY:32,nozR:3,col:['#c4c9cd','#e4e7e9','#b5bbc0'],le:[[8,0],[31,22]],flag:[-20,16],nav:[31.2,23.5]},
- {id:'f22',name:'HAYALET',desc:'Radarların göremediği bir hayalet. Düşman onu ancak çok geç fark eder.',price:85000,hp:4,rate:.1,dmg:1.25,spd:1.15,startP:2,stealth:.35,special:'Gizlilik: düşmanların nişanı şaşar. 2. güçle başlar.',
+ {id:'f22',flr:4,name:'HAYALET',desc:'Radarların göremediği bir hayalet. Düşman onu ancak çok geç fark eder.',price:85000,hp:4,rate:.1,dmg:1.25,spd:1.15,startP:2,stealth:.35,special:'Gizlilik: düşmanların nişanı şaşar. 2. güçle başlar.',
   pts:[[0,-46],[1.8,-41],[3.4,-34],[5,-26],[7,-19],[10.6,-10],[11.2,-6],[33,10],[33,14],[15,17.5],[14,19],[27,27],[25,33],[10.5,32.5],[9,37],[0.6,37],[0,36]],
   tails:{t:'cant',x0:8.5,y0:9,x1:11,y1:27,lean:6},canopy:{y0:-35,y1:-13,w:3.6,tint:'gold'},intake:[[7,-19],[10.6,-10],[10.8,-6],[7.6,-9]],
   noz:[-4.5,4.5],nozY:36,nozR:3,square:1,col:['#535b64','#9ca4ad','#49515a'],le:[[11.2,-6],[33,10]],flag:[-21,12],nav:[33,12]},
- {id:'su57',name:'KARA KUZGUN',desc:'Gece yarısı uçan kara kuzgun. Sessizce yaklaşır, sert vurur.',price:85000,hp:4,rate:.1,dmg:1.35,spd:1.2,startP:2,stealth:.25,special:'Gizlilik ve yüksek hasar. 2. güçle başlar.',
+ {id:'su57',flr:4,name:'KARA KUZGUN',desc:'Gece yarısı uçan kara kuzgun. Sessizce yaklaşır, sert vurur.',price:85000,hp:4,rate:.1,dmg:1.35,spd:1.2,startP:2,stealth:.25,special:'Gizlilik ve yüksek hasar. 2. güçle başlar.',
   pts:[[0,-50],[1.8,-44],[3.2,-36],[4.6,-28],[6.4,-20],[12.5,-14],[12.5,-9],[11.5,-6],[33,11],[33,15.5],[15,18],[14,21],[27,27],[27,31],[12.5,30],[10.5,37],[6.5,37],[3.5,32],[2.2,36],[1.4,42],[0,42]],
   tails:{t:'cant',x0:10,y0:12,x1:12,y1:27,lean:5},canopy:{y0:-39,y1:-22,w:3.4,tint:'clear'},intake:null,
   noz:[-8.5,8.5],nozY:36,nozR:3,col:['#b9c4cf','#dde3e9','#a8b4c0'],camo:'#363c44',le:[[11.5,-6],[33,11]],flag:[-22,11.5],nav:[33,13]},
- {id:'f35',name:'GÖLGE',desc:'Bulutların arasında kaybolan bir gölge. Görünmez kalır, füzeleriyle avlanır.',price:100000,hp:4,rate:.1,dmg:1.3,spd:1.15,startP:2,stealth:.35,miss:2,special:'Gizlilik: düşmanların nişanı şaşar. 2. güçle başlar.',
+ {id:'f35',flr:4,name:'GÖLGE',desc:'Bulutların arasında kaybolan bir gölge. Görünmez kalır, füzeleriyle avlanır.',price:100000,hp:4,rate:.1,dmg:1.3,spd:1.15,startP:2,stealth:.35,miss:2,special:'Gizlilik: düşmanların nişanı şaşar. 2. güçle başlar.',
   pts:[[0,-46],[1.8,-41],[3.4,-34],[5,-26],[7,-19],[10.6,-10],[11.2,-6],[33,10],[33,14],[15,17.5],[14,19],[27,27],[25,33],[10.5,32.5],[9,37],[0.6,37],[0,36]],
   tails:{t:'cant',x0:8.5,y0:9,x1:11,y1:27,lean:6},canopy:{y0:-35,y1:-13,w:3.6,tint:'gold'},intake:[[7,-19],[10.6,-10],[10.8,-6],[7.6,-9]],
   noz:[-4.5,4.5],nozY:36,nozR:3,square:1,col:['#3f454c','#7d848c','#353a40'],le:[[11.2,-6],[33,10]],flag:[-21,12],nav:[33,12]},
- {id:'kaan',name:'KAĞAN',desc:'Türkiye\'nin milli beşinci nesil savaş uçağı.',price:120000,hp:5,rate:.09,dmg:1.4,spd:1.2,startP:2,stealth:.35,miss:2,special:'Gizlilik, erken füze, 5 can ve en hızlı ateş.',
+ {id:'kaan',flr:5,name:'KAĞAN',desc:'Türkiye\'nin milli beşinci nesil savaş uçağı.',price:120000,hp:5,rate:.09,dmg:1.4,spd:1.2,startP:2,stealth:.35,miss:2,special:'Gizlilik, erken füze, 5 can ve en hızlı ateş.',
   pts:[[0,-46],[1.6,-40],[3.2,-33],[5,-25],[6.8,-17],[8.6,-10],[10.4,-5],[11.2,-2],[34,13],[35,15.5],[34.4,18.5],[15,20],[14,23],[26,30.5],[26.4,34],[11.5,33],[9.6,38],[2.2,38],[1,35],[0,35]],
   tails:{t:'cant',x0:8.2,y0:6,x1:10.8,y1:24,lean:5.2},canopy:{y0:-33,y1:-11,w:3.6,tint:'gold'},intake:[[6.2,-17],[9.4,-9],[9.6,-3],[6.4,-6]],
   noz:[-5.9,5.9],nozY:37,nozR:3.6,col:['#59626c','#b6bfc8','#4e5761'],le:[[11.2,-2],[34,13]],flag:[-23,12],nav:[34.4,16],code:'TC-001'}
@@ -1122,6 +1125,8 @@ const SND={c:null,m:null,nb:null,eng:null,muted:false,
     const g=this.c.createGain();g.gain.setValueAtTime(vol,t0);g.gain.exponentialRampToValueAtTime(.0001,t0+dur);
     s.connect(f);f.connect(g);g.connect(this.out());s.start(t0,Math.random()*.5);s.stop(t0+dur+.05);},
   shoot(){this.tone(1800,.09,'sawtooth',.016,420);this.tone(2400,.05,'sine',.012,900)},
+  gun(){this.noise(.05,.05,2200);this.tone(140,.05,'square',.02,70)},
+  flare(){const n=this.now();for(let i=0;i<4;i++){this.noise(.18,.05,3500,n+i*.07,1);}this.tone(900,.3,'sine',.02,300,n);},
   missile(){this.noise(.35,.07,2600)},
   tick(){this.tone(1800,.025,'square',.012)},
   boom(sz){this.noise(.3+sz*.007,Math.min(.55,.16+sz*.004),2000);this.tone(110,.35+sz*.004,'sine',Math.min(.4,.15+sz*.003),35);},
@@ -1763,6 +1768,22 @@ function drawGold(c,g){
 function drawPowerKind(k){return{P:'#ffc940',S:'#4fc3ff',H:'#4be08a',B:'#ff7a3a',R:'#c77dff',M:'#7df9ff',U:'#b8f05a'}[k];}
 // ---- projectiles ----
 // player: cyan laser bolt with glow and a short muzzle flash
+// player 20 mm cannon: thin yellow-orange tracer with a star-shaped muzzle flash
+function drawGunRound(b){
+  const sp=Math.hypot(b.vx,b.vy)||1,ux=b.vx/sp,uy=b.vy/sp,len=32*S,tx=b.x-ux*len,ty=b.y-uy*len;ctx.lineCap='round';
+  ctx.strokeStyle='rgba(255,150,40,.22)';ctx.lineWidth=7*S;ctx.beginPath();ctx.moveTo(b.x-ux*len*.5,b.y-uy*len*.5);ctx.lineTo(b.x,b.y);ctx.stroke();
+  const g=ctx.createLinearGradient(tx,ty,b.x,b.y);g.addColorStop(0,'rgba(255,120,20,0)');g.addColorStop(.6,'rgba(255,170,50,.7)');g.addColorStop(1,'rgba(255,240,170,1)');
+  ctx.strokeStyle=g;ctx.lineWidth=3.8*S;ctx.beginPath();ctx.moveTo(tx,ty);ctx.lineTo(b.x,b.y);ctx.stroke();
+  ctx.strokeStyle='#fffbe6';ctx.lineWidth=1.2*S;ctx.beginPath();ctx.moveTo(b.x-ux*len*.35,b.y-uy*len*.35);ctx.lineTo(b.x,b.y);ctx.stroke();
+  const age=t-(b.born||-1);
+  if(age>=0&&age<.05){const k=1-age/.05,fx=b.ox,fy=b.oy;ctx.save();ctx.translate(fx,fy);ctx.rotate(rnd(0,1));
+    const r=11*S*k+3;const fg=ctx.createRadialGradient(0,0,0,0,0,r);fg.addColorStop(0,'rgba(255,255,230,1)');fg.addColorStop(.35,'rgba(255,200,80,.8)');fg.addColorStop(1,'rgba(255,90,20,0)');
+    ctx.fillStyle=fg;ctx.beginPath();for(let i=0;i<10;i++){const a=i/10*TAU,rr=i%2?r*.38:r;ctx.lineTo(Math.cos(a)*rr,Math.sin(a)*rr);}ctx.closePath();ctx.fill();ctx.restore();}
+  ctx.lineCap='butt';}
+// decoy flares: burning magnesium balls with smoke trails
+function drawFlares(){flares.forEach(f=>{if(f.dl>0)return;const k=Math.max(0,Math.min(1,f.life/.6)),fl=.75+Math.random()*.25;
+  glow(ctx,f.x,f.y,(26+Math.random()*10)*S*k,'rgba(255,170,60,.8)',fl);glow(ctx,f.x,f.y,9*S*k,'rgba(255,240,200,.95)',1);
+  ctx.fillStyle='rgba(255,255,245,'+(.95*k)+')';ctx.beginPath();ctx.arc(f.x,f.y,3.4*S,0,TAU);ctx.fill();});}
 function drawLaserBolt(b,under){
   const sp=Math.hypot(b.vx,b.vy)||1,ux=b.vx/sp,uy=b.vy/sp,len=30*S,tx=b.x-ux*len,ty=b.y-uy*len;
   ctx.lineCap='round';
@@ -1828,7 +1849,7 @@ function drawPower(c,x,y,k,r){
 
 // ================= GAME STATE =================
 let player=null,pb=[],eb=[],enemies=[],powers=[],parts=[],rings=[],pops=[],golds=[],lasers=[];
-let grounds=[],uav=null,uavM=[],samT=0,samFirst=true;
+let flares=[],flareCd=0;let grounds=[],uav=null,uavM=[],samT=0,samFirst=true;
 let t=0,last=0,running=false,paused=false,score=0,spawnT=0,fireT=0,missT=0,shake=0,level=1,flashT=0,bombFlash=0;
 let DL=1;const isHard=()=>level%5===0;
 // difficulty rises over each block of 5 levels; every 5th level is extra hard, the next one eases off
@@ -1840,7 +1861,7 @@ const shieldDur=()=>10+UP.shield*3;
 const maxBombs=()=>3+UP.bomb;
 function reset(){
   const mh=J.hp+UP.hp;
-  player={x:W/2,y:H*.8,hp:mh,max:mh,inv:0,power:J.startP,shield:0,bank:0,bombs:1+UP.bomb,rapid:0,magnet:0};
+  player={x:W/2,y:H*.8,hp:mh,max:mh,inv:0,power:J.startP,shield:0,bank:0,bombs:1+UP.bomb,rapid:0,magnet:0,flares:J.flr||0};flares=[];flareCd=0;
   pb=[];eb=[];enemies=[];powers=[];parts=[];rings=[];pops=[];golds=[];lasers=[];grounds=[];uav=null;uavM=[];samFirst=true;
   combo.kills=0;combo.t=0;combo.mult=1;
   t=0;score=0;fireT=0;missT=0;level=1;theme=THEMES[0];buildScenery();newRun();startLevel();updateHud();
@@ -1863,6 +1884,7 @@ function paintBuffs(){
   if(player.shield>0)b.push([L('b_shield'),player.shield,'#4fc3ff']);
   if(player.rapid>0)b.push([L('b_rapid'),player.rapid,'#c77dff']);
   if(player.magnet>0)b.push([L('b_magnet'),player.magnet,'#7df9ff']);
+  if(J.flr)b.push([L('b_flare'),player.flares,'#ffb347']);
   if(uav&&uav.st!=='out')b.push([L('b_uav'),uav.st==='in'?uav.life:uav.life,'#b8f05a']);
   $('buffs').innerHTML=b.map(x=>'<div class="pill" style="color:'+x[2]+'">'+x[0]+' '+Math.ceil(x[1])+'</div>').join('');
   const cb=$('combo');
@@ -1896,9 +1918,12 @@ function spawnBoss(){const hp=Math.round(160*Math.pow(1.45,DL-1)*(isHard()?1.5:1
   pops.push({x:W/2,y:H*.42,txt:L('warn',{x:L('boss'+bt)}),c:'#ff6a3a',life:2.4,big:1,fixed:1});SND.siren();}
 function firePlayer(){
   const x=player.x,y=player.y-44*S,p=player.power,v=-760,d=J.dmg*dmgMul();
-  const add=(dx,ang)=>pb.push({x:x+dx,y,vx:Math.sin(ang)*-v,vy:v*Math.cos(ang),d,ox:x+dx,oy:y,born:t});
-  add(-4*S,0);add(4*S,0);if(p>=2){add(-16*S,-.1);add(16*S,.1);}if(p>=3){add(-26*S,-.22);add(26*S,.22);}
-  SND.shoot();
+  const add=(dx,ang,gun)=>{const a=ang+(gun?rnd(-.025,.025):0),sp=gun?-1150:v;pb.push({x:x+dx,y,vx:Math.sin(a)*-sp,vy:sp*Math.cos(a),d,ox:x+dx,oy:y,born:t,gun});};
+  // 20 mm cannon from the nose, lasers from the wings as power grows
+  add(-4*S,0,1);add(4*S,0,1);
+  for(let k=0;k<2;k++){const d2=k?1:-1;parts.push({x:x+d2*7*S,y:y+30*S,vx:d2*rnd(60,120),vy:rnd(40,110),life:.45,dec:2.4,r:1.3*S,c:'#e2b04a'});}
+  if(p>=2){add(-16*S,-.1);add(16*S,.1);}if(p>=3){add(-26*S,-.22);add(26*S,.22);}
+  SND.gun();if(p>=2)SND.shoot();
 }
 function fireMissiles(){[-1,1].forEach(dd=>pb.push({x:player.x+dd*22*S,y:player.y,vx:dd*120,vy:-200,d:3*J.dmg*dmgMul(),missile:1,life:3}));SND.missile();}
 function aimed(e,spd,spread,extra){const st=J.stealth||0;const a=Math.atan2(player.y-e.y,player.x-e.x)+(spread||0)+rnd(-st,st);
@@ -2067,7 +2092,7 @@ function update(dt){
     if(b.y<-30||b.y>H+30||b.x<-30||b.x>W+30||(b.missile&&b.life<=0)){pb.splice(i,1);continue;}
     for(const e of enemies){if(Math.abs(b.x-e.x)<e.s*.9&&Math.abs(b.y-e.y)<e.s*.8&&e.y>-e.s*.5){
       e.hp-=b.d;e.hit=.06;pb.splice(i,1);if(Math.random()<.3)SND.tick();
-      parts.push({x:b.x,y:b.y,vx:rnd(-60,60),vy:rnd(-80,0),life:.4,dec:3,r:2,c:'#fff3b0'});break;}}
+      for(let q=0;q<(b.gun?4:2);q++)parts.push({x:b.x,y:b.y,vx:rnd(-110,110),vy:rnd(-140,20),life:.35,dec:3,r:b.gun?1.6:2,c:b.gun?'#ffc04a':'#bfefff'});break;}}
   }
   for(let i=enemies.length-1;i>=0;i--){const e=enemies[i];e.hit=Math.max(0,e.hit-dt);const fm=1+(DL-1)*.15;
     if(e.k==='drone'){e.y+=e.v*dt;e.ph+=dt*3;e.x=e.x0+Math.sin(e.ph)*e.amp;}
@@ -2108,7 +2133,22 @@ function update(dt){
     if(e.y>H+80||e.y<-900||(e.k==='kami'&&e.dive&&(e.x<-60||e.x>W+60||e.y<-80)))enemies.splice(i,1);
   }
   updateGround(dt);
+  // flares: strong jets auto-launch decoys when a guided missile closes in
+  flareCd-=dt;
+  if(player.flares>0&&flareCd<=0&&phase!=='clear'&&eb.some(b=>b.homing&&!b.decoy&&Math.hypot(b.x-player.x,b.y-player.y)<190*S)){
+    player.flares--;flareCd=3.5;SND.flare();pops.push({x:player.x,y:player.y-56*S,txt:L('flare'),c:'#ffb347',life:1});
+    const nf=[];for(let k=0;k<8;k++){const d2=k%2?1:-1,f={x:player.x+d2*8*S,y:player.y+6*S,vx:d2*rnd(140,300),vy:rnd(-70,40),life:rnd(2,2.8),dl:k*.06};flares.push(f);nf.push(f);}
+    eb.forEach(b=>{if(b.homing&&!b.decoy&&Math.hypot(b.x-player.x,b.y-player.y)<360*S)b.decoy=nf[Math.floor(Math.random()*nf.length)];});}
+  // missiles that arrive while flares are still burning go for the flares too
+  if(flares.length){const live=flares.filter(f=>f.dl<=0&&f.life>.6);if(live.length)eb.forEach(b=>{if(b.homing&&!b.decoy&&Math.hypot(b.x-player.x,b.y-player.y)<230*S)b.decoy=live[Math.floor(Math.random()*live.length)];});}
+  for(let i=flares.length-1;i>=0;i--){const f=flares[i];if(f.dl>0){f.dl-=dt;f.x=player.x+Math.sign(f.vx)*8*S;f.y=player.y+6*S;continue;}f.vx*=Math.pow(.3,dt);f.vy+=55*dt;f.x+=f.vx*dt;f.y+=f.vy*dt;f.life-=dt;
+    if(Math.random()<.8)parts.push({x:f.x,y:f.y,vx:rnd(-8,8),vy:rnd(-8,8)+30,life:.9,dec:1,r:2.4*S,c:'smoke'});
+    if(f.life<=0)flares.splice(i,1);}
   for(let i=eb.length-1;i>=0;i--){const b=eb[i];
+    if(b.decoy){const f=b.decoy,sp=Math.hypot(b.vx,b.vy),cur=Math.atan2(b.vy,b.vx);
+      if(f.life>0&&flares.includes(f)){let da=Math.atan2(f.y-b.y,f.x-b.x)-cur;while(da>Math.PI)da-=TAU;while(da<-Math.PI)da+=TAU;const na=cur+Math.max(-4*dt,Math.min(4*dt,da));b.vx=Math.cos(na)*sp;b.vy=Math.sin(na)*sp;
+        if(f.dl<=0&&Math.hypot(f.x-b.x,f.y-b.y)<12*S){explode(b.x,b.y,22*S);eb.splice(i,1);continue;}}
+      b.home=0;}
     if(b.home>0){b.home-=dt;const a=Math.atan2(player.y-b.y,player.x-b.x),sp=Math.hypot(b.vx,b.vy),cur=Math.atan2(b.vy,b.vx);
       let da=a-cur;while(da>Math.PI)da-=TAU;while(da<-Math.PI)da+=TAU;const na=cur+Math.max(-2*dt,Math.min(2*dt,da));b.vx=Math.cos(na)*sp;b.vy=Math.sin(na)*sp;}
     b.x+=b.vx*dt;b.y+=b.vy*dt;
@@ -2204,8 +2244,9 @@ function render(dt){
       const g=ctx.createLinearGradient(L.x-L.w,0,L.x+L.w,0);g.addColorStop(0,'rgba(255,40,140,0)');g.addColorStop(.3,'rgba(255,60,160,.55)');g.addColorStop(.5,'rgba(255,240,250,1)');g.addColorStop(.7,'rgba(255,60,160,.55)');g.addColorStop(1,'rgba(255,40,140,0)');
       ctx.fillStyle=g;ctx.fillRect(L.x-L.w*wob,L.y0,L.w*2*wob,H-L.y0);ctx.restore();}});
   ctx.globalCompositeOperation='lighter';
-  if(theme.light||theme.snow){ctx.globalCompositeOperation='source-over';pb.forEach(b=>{if(!b.missile)drawLaserBolt(b,true);});ctx.globalCompositeOperation='lighter';}
-  pb.forEach(b=>{if(b.missile){drawMissile(b);return;}drawLaserBolt(b,false);});
+  if(theme.light||theme.snow){ctx.globalCompositeOperation='source-over';pb.forEach(b=>{if(!b.missile&&!b.gun)drawLaserBolt(b,true);});ctx.globalCompositeOperation='lighter';}
+  pb.forEach(b=>{if(b.missile){drawMissile(b);return;}if(b.gun){drawGunRound(b);return;}drawLaserBolt(b,false);});
+  drawFlares();
   uavM.forEach(b=>drawMissile(b));
   {const lt=!!(theme.light||theme.snow);ctx.globalCompositeOperation='source-over';
     eb.forEach(b=>{if(b.homing)drawEnemyRocket(b);else drawTracer(b,lt);});
@@ -2645,7 +2686,7 @@ function paintHangar(){
   $('hgName').textContent=m.name;$('lock').hidden=own;$('hint').hidden=false;$('hgDesc').textContent=L('j_'+m.id+'_d');
   const bars=sh?[[L('s_ammo'),m.ammo/8],[L('s_time'),m.dur/24],[L('s_lock'),Math.min(1,.45/m.lockT)]]:[[L('spd'),m.spd/1.35],[L('fire'),(m.dmg/m.rate)/MAXFIRE],[L('armor'),m.hp/5]];
   $('hgStats').innerHTML=bars.map(b=>'<span>'+b[0]+'</span><div class="bar"><b style="width:'+Math.round(b[1]*100)+'%"></b></div>').join('');
-  $('hgSpecial').textContent=L('special',{x:L('j_'+m.id+'_s')});
+  $('hgSpecial').textContent=L('special',{x:L('j_'+m.id+'_s')})+(m.flr?'  •  '+L('flr_sp',{n:m.flr}):'');
   $('dots').innerHTML=HL().map((j,i)=>'<i class="'+(i===hIdx?'on ':'')+(hgOwn(j)?'own':'')+'"></i>').join('');
   const b=$('hgAct'),g=$('hgGem'),gp=sh?m.gem:GEMP[m.id];b.disabled=false;b.className='btn';g.hidden=own||!gp;g.disabled=false;
   if(own){if(hgSel(m)){b.textContent=L('selected');b.disabled=true;}else{b.textContent=L('select');b.className='btn alt';}}
