@@ -285,7 +285,7 @@ canvas{display:block}
       <div class="card toggle"><div class="tx"><b><span data-i18n="vib">Titreşim</span></b><small><span data-i18n="vibd">Vurulunca telefon titrer</span></small></div><button class="sw" role="switch" id="swVib"></button></div>
       <div class="card toggle"><div class="tx"><b><span data-i18n="shake">Ekran sarsıntısı</span></b><small><span data-i18n="shaked">Patlamalarda ekran sallanır</span></small></div><button class="sw" role="switch" id="swShake"></button></div>
       <div class="card"><div class="tx"><b><span data-i18n="resett">İlerlemeyi sıfırla</span></b><small><span data-i18n="resetd">Altın, elmas, uçaklar, yükseltmeler ve başarımlar silinir</span></small></div><button class="sbtn" id="resetBtn" style="background:#5a1a1f;color:#ffb3b8"><span data-i18n="reset">SIFIRLA</span></button></div>
-      <p class="small" style="text-align:center"><span data-i18n="version">Sürüm 3.5</span></p>
+      <p class="small" style="text-align:center"><span data-i18n="version">Sürüm 3.6</span></p>
       <button class="btn ghost" data-back style="align-self:center"><span data-i18n="back">GERİ</span></button>
     </div>
   </div>
@@ -543,7 +543,7 @@ const I18N_SRC={
  reset:['SIFIRLA','RESET','重置','REINICIAR','EFFACER','LÖSCHEN','СБРОС'],
  sure:['EMİN MİSİN?','ARE YOU SURE?','确定吗？','¿SEGURO?','SÛR ?','SICHER?','ТОЧНО?'],
  resetdone:['SIFIRLANDI','DONE','已重置','HECHO','FAIT','ERLEDIGT','ГОТОВО'],
- version:['Sürüm 3.5','Version 3.5','版本 3.5','Versión 3.5','Version 3.5','Version 3.5','Версия 3.5'],
+ version:['Sürüm 3.6','Version 3.6','版本 3.6','Versión 3.6','Version 3.6','Version 3.6','Версия 3.6'],
  back:['GERİ','BACK','返回','ATRÁS','RETOUR','ZURÜCK','НАЗАД'],
  ok:['TAMAM','OK','好的','VALE','OK','OK','ОК'],
  how:['NASIL OYNANIR','HOW TO PLAY','玩法说明','CÓMO JUGAR','COMMENT JOUER','SO WIRD GESPIELT','КАК ИГРАТЬ'],
@@ -2085,7 +2085,7 @@ function spawnShip(){
   else{let best=-1;for(let k=0;k<9;k++){const cx=W*rnd(.2,.8);let d=1e9;
       feats.forEach(f=>{if(f.y>-500*S&&f.y<H*.6)d=Math.min(d,Math.abs(f.x-cx));});
       ships.forEach(o=>{if(!o.dead)d=Math.min(d,Math.abs(o.x-cx)*.8);});if(d>best){best=d;x=cx;}}}
-  const hp=4+Math.floor(DL*.8);
+  const hp=DL>=4?5:4;
   ships.push({x,y:-110*S,ang:rnd(-.16,.16),hp,max:hp,cd:rnd(1.8,2.8),warn:0,salvo:0,st:0,vls:0,hit:0,dead:0,sink:0,ph:rnd(0,6),inb:0});
   pops.push({x:W/2,y:H*.3,txt:L('ship_warn'),c:'#ff5a4a',life:1.8,big:1,fixed:1});SND.warn();}
 function fireVls(s){const p=shipPt(s,SHIP_VLS[s.vls][0],SHIP_VLS[s.vls][1]);
@@ -2114,6 +2114,7 @@ function updateShips(dt){const fm=1+(DL-1)*.15;
     else{s.cd-=dt*fm;if(s.cd<=0){s.warn=.7;s.vls=Math.random()<.5?0:1;s.cd=rnd(3.6,4.8)/(1+(DL-1)*.08);SND.warn();}}}
   // player's anti-ship missiles: automatic lock-on
   asmLock.cd-=dt;
+  if(player.asm<(J.asm||0)){player.asmT=(player.asmT||0)+dt;if(player.asmT>=3.5){player.asmT=0;player.asm++;paintBuffs();}}else player.asmT=0;
   const vis=ships.filter(s=>!s.dead&&s.y>30&&s.y<H*.85);
   if(asmLock.tg&&!vis.includes(asmLock.tg)){asmLock.tg=null;asmLock.t=0;}
   if(!asmLock.tg&&player.asm>0&&vis.length){asmLock.tg=vis.slice().sort((a,b)=>Math.hypot(a.x-player.x,a.y-player.y)-Math.hypot(b.x-player.x,b.y-player.y))[0];asmLock.t=0;SND.tick();}
