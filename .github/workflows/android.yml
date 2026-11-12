@@ -49,7 +49,7 @@ jobs:
             mkdir -p www
             cp index.html manifest.webmanifest icon-180.png icon-192.png icon-512.png www/
             npm init -y >/dev/null
-            npm install @capacitor/core@latest @capacitor/android@latest @capacitor/status-bar@latest @capacitor/splash-screen@latest
+            npm install @capacitor/core@latest @capacitor/android@latest @capacitor/app@latest @capacitor/status-bar@latest @capacitor/splash-screen@latest
             npm install -D @capacitor/cli@latest @capacitor/assets@3
             npm ls --depth=0
             npx cap add android

@@ -284,8 +284,9 @@ canvas{display:block}
       <div class="card toggle"><div class="tx"><b><span data-i18n="mus">Müzik</span></b><small><span data-i18n="musd">Bölüm müziği</span></small></div><button class="sw" role="switch" id="swMus"></button></div>
       <div class="card toggle"><div class="tx"><b><span data-i18n="vib">Titreşim</span></b><small><span data-i18n="vibd">Vurulunca telefon titrer</span></small></div><button class="sw" role="switch" id="swVib"></button></div>
       <div class="card toggle"><div class="tx"><b><span data-i18n="shake">Ekran sarsıntısı</span></b><small><span data-i18n="shaked">Patlamalarda ekran sallanır</span></small></div><button class="sw" role="switch" id="swShake"></button></div>
+      <div class="card" id="rateCard" hidden><div class="tx"><b><span data-i18n="rate_t">Oyunu puanla</span></b><small><span data-i18n="rate_d">Beğendiysen Google Play'de puan ver, bize çok yardımı olur</span></small></div><button class="sbtn" id="rateBtn"><span data-i18n="rate_b">PUANLA</span></button></div>
       <div class="card"><div class="tx"><b><span data-i18n="resett">İlerlemeyi sıfırla</span></b><small><span data-i18n="resetd">Altın, elmas, uçaklar, yükseltmeler ve başarımlar silinir</span></small></div><button class="sbtn" id="resetBtn" style="background:#5a1a1f;color:#ffb3b8"><span data-i18n="reset">SIFIRLA</span></button></div>
-      <p class="small" style="text-align:center"><span data-i18n="version">Sürüm 3.6</span></p>
+      <p class="small" style="text-align:center"><span data-i18n="version">Sürüm 3.8</span></p>
       <button class="btn ghost" data-back style="align-self:center"><span data-i18n="back">GERİ</span></button>
     </div>
   </div>
@@ -322,6 +323,12 @@ canvas{display:block}
       <div class="lgGrid" id="lgGrid"></div>
       <button class="btn" id="lgClaim" style="align-self:center"><span data-i18n="claim">ÖDÜLÜ AL</span></button>
     </div>
+  </div>
+
+  <div class="overlay" id="exitEl" hidden>
+    <h1 style="font-size:clamp(2.4rem,11vw,3.6rem)"><span data-i18n="exit_q">ÇIKIŞ</span></h1>
+    <p><span data-i18n="exit_d">Oyundan çıkmak istiyor musun?</span></p>
+    <div class="row"><button class="btn" id="exitNo"><span data-i18n="exit_n">KAL</span></button><button class="btn ghost" id="exitYes"><span data-i18n="exit_y">ÇIK</span></button></div>
   </div>
 
   <div class="overlay" id="hangar" hidden>
@@ -543,7 +550,14 @@ const I18N_SRC={
  reset:['SIFIRLA','RESET','重置','REINICIAR','EFFACER','LÖSCHEN','СБРОС'],
  sure:['EMİN MİSİN?','ARE YOU SURE?','确定吗？','¿SEGURO?','SÛR ?','SICHER?','ТОЧНО?'],
  resetdone:['SIFIRLANDI','DONE','已重置','HECHO','FAIT','ERLEDIGT','ГОТОВО'],
- version:['Sürüm 3.7','Version 3.7','版本 3.7','Versión 3.7','Version 3.7','Version 3.7','Версия 3.7'],
+ version:['Sürüm 3.8','Version 3.8','版本 3.8','Versión 3.8','Version 3.8','Version 3.8','Версия 3.8'],
+ rate_t:['Oyunu puanla','Rate the game','为游戏评分','Valora el juego','Noter le jeu','Spiel bewerten','Оценить игру'],
+ rate_d:['Beğendiysen Google Play\'de puan ver, bize çok yardımı olur','If you enjoy it, rate us on Google Play — it really helps','喜欢的话请在 Google Play 上评分，这对我们帮助很大','Si te gusta, valóranos en Google Play, nos ayuda mucho','Si le jeu vous plaît, notez-le sur Google Play, ça nous aide beaucoup','Wenn es dir gefällt, bewerte uns bei Google Play – das hilft sehr','Если нравится, поставь оценку в Google Play — это очень помогает'],
+ rate_b:['PUANLA','RATE','评分','VALORAR','NOTER','BEWERTEN','ОЦЕНИТЬ'],
+ exit_q:['ÇIKIŞ','EXIT','退出','SALIR','QUITTER','BEENDEN','ВЫХОД'],
+ exit_d:['Oyundan çıkmak istiyor musun?','Do you want to exit the game?','要退出游戏吗？','¿Quieres salir del juego?','Voulez-vous quitter le jeu ?','Willst du das Spiel beenden?','Выйти из игры?'],
+ exit_y:['ÇIK','EXIT','退出','SALIR','QUITTER','BEENDEN','ВЫЙТИ'],
+ exit_n:['KAL','STAY','留下','QUEDARSE','RESTER','BLEIBEN','ОСТАТЬСЯ'],
  back:['GERİ','BACK','返回','ATRÁS','RETOUR','ZURÜCK','НАЗАД'],
  ok:['TAMAM','OK','好的','VALE','OK','OK','ОК'],
  how:['NASIL OYNANIR','HOW TO PLAY','玩法说明','CÓMO JUGAR','COMMENT JOUER','SO WIRD GESPIELT','КАК ИГРАТЬ'],
@@ -2412,8 +2426,8 @@ setInterval(()=>{if(!running||paused)return;const s=8*J.spd;if(keys.ArrowLeft)tg
 
 // ================= SCREENS =================
 const pauseEl=$('pauseEl'),shopEl=$('shopEl'),misEl=$('misEl'),setEl=$('setEl'),helpEl=$('helpEl');
-const storeEl=$('storeEl'),contEl=$('contEl'),langEl=$('langEl'),loginEl=$('loginEl');
-const ALL=[startEl,overEl,hangarEl,pauseEl,shopEl,misEl,setEl,helpEl,storeEl,contEl,langEl,loginEl];
+const storeEl=$('storeEl'),contEl=$('contEl'),langEl=$('langEl'),loginEl=$('loginEl'),exitEl=$('exitEl');
+const ALL=[startEl,overEl,hangarEl,pauseEl,shopEl,misEl,setEl,helpEl,storeEl,contEl,langEl,loginEl,exitEl];
 let backTo=null;
 function showOnly(el){ALL.forEach(x=>x.hidden=x!==el);if(el)el.scrollTop=0;}
 function openPanel(el){backTo=ALL.find(x=>!x.hidden)||startEl;showOnly(el);SND.init();SND.resume();SND.click();}
@@ -2454,6 +2468,32 @@ function end(){hud.hidden=true;SND.over();$('bombBtn').hidden=true;banner=null;l
   $('final').textContent=score.toLocaleString(LOCALE);showOnly(overEl);checkAch();showBest();paintStart();}
 $('play').addEventListener('click',begin);$('again').addEventListener('click',begin);
 $('toMenu2').addEventListener('click',()=>{SND.click();clearField();showOnly(startEl);paintStart();});
+
+// ---- Android geri tuşu: önceki ekrana dön, oyunda duraklat, ana menüde çıkışı sor ----
+const CapApp=APP&&window.Capacitor.Plugins&&window.Capacitor.Plugins.App;
+function exitApp(){try{if(CapApp&&CapApp.exitApp)CapApp.exitApp();else window.close();}catch(e){}}
+function onBack(){
+  const vis=ALL.find(x=>!x.hidden);
+  if(running&&!paused&&!vis){pauseGame();return;}
+  if(vis===pauseEl){SND.click();resumeGame();return;}
+  if(vis===contEl)return; // geri sayım kendi bitsin, yanlışlıkla elmas/ilerleme kaybı olmasın
+  if(vis===loginEl){$('lgClaim').click();return;}
+  if(vis===exitEl){SND.click();showOnly(startEl);paintStart();return;}
+  if(vis===hangarEl){$('hgBack').click();return;}
+  if(vis===overEl){$('toMenu2').click();return;}
+  if(vis===startEl){SND.click();showOnly(exitEl);return;}
+  const b=vis&&vis.querySelector('[data-back]');
+  if(b){b.click();return;}
+  showOnly(startEl);paintStart();
+}
+$('exitNo').addEventListener('click',()=>{SND.click();showOnly(startEl);paintStart();});
+$('exitYes').addEventListener('click',exitApp);
+if(CapApp&&CapApp.addListener)CapApp.addListener('backButton',onBack);
+
+// ---- Oyunu puanla (sadece Android uygulamasında) ----
+if(APP){$('rateCard').hidden=false;
+  $('rateBtn').addEventListener('click',()=>{SND.click();
+    window.location.href='https://play.google.com/store/apps/details?id=com.agacemustafa.kagan';});}
 
 // ---- Mağaza (elmas) ----
 function openStore(msg){paintStore();openPanel(storeEl);if(msg)toast(L('gemsneeded'),msg);}
