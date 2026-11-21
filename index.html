@@ -550,7 +550,7 @@ const I18N_SRC={
  reset:['SIFIRLA','RESET','重置','REINICIAR','EFFACER','LÖSCHEN','СБРОС'],
  sure:['EMİN MİSİN?','ARE YOU SURE?','确定吗？','¿SEGURO?','SÛR ?','SICHER?','ТОЧНО?'],
  resetdone:['SIFIRLANDI','DONE','已重置','HECHO','FAIT','ERLEDIGT','ГОТОВО'],
- version:['Sürüm 3.8','Version 3.8','版本 3.8','Versión 3.8','Version 3.8','Version 3.8','Версия 3.8'],
+ version:['Sürüm 3.9','Version 3.9','版本 3.9','Versión 3.9','Version 3.9','Version 3.9','Версия 3.9'],
  rate_t:['Oyunu puanla','Rate the game','为游戏评分','Valora el juego','Noter le jeu','Spiel bewerten','Оценить игру'],
  rate_d:['Beğendiysen Google Play\'de puan ver, bize çok yardımı olur','If you enjoy it, rate us on Google Play — it really helps','喜欢的话请在 Google Play 上评分，这对我们帮助很大','Si te gusta, valóranos en Google Play, nos ayuda mucho','Si le jeu vous plaît, notez-le sur Google Play, ça nous aide beaucoup','Wenn es dir gefällt, bewerte uns bei Google Play – das hilft sehr','Если нравится, поставь оценку в Google Play — это очень помогает'],
  rate_b:['PUANLA','RATE','评分','VALORAR','NOTER','BEWERTEN','ОЦЕНИТЬ'],
@@ -2630,7 +2630,7 @@ Object.assign(JETS.find(j=>j.id==='su57'),{noz3d:[-5.7,5.7],nozY3d:36,nozR3d:2.6
 Object.assign(JETS.find(j=>j.id==='su35'),{noz3d:[-4.85,4.85],nozY3d:35.5,nozR3d:2.5});
 Object.assign(JETS.find(j=>j.id==='rafale'),{noz3d:[-3.25,3.25],nozY3d:35,nozR3d:2.5});
 Object.assign(JETS.find(j=>j.id==='typhoon'),{noz3d:[-2.6,2.6],nozY3d:37,nozR3d:2.7});
-['rafale','typhoon','f18','su35','su57'].forEach(id=>JETS.find(j=>j.id===id).noFlag=1); // real operator paint, roundels only
+JETS.concat(SIHAS).forEach(j=>j.noFlag=1); // no Turkish flag on any aircraft; roundels only
 Object.assign(SIHAS.find(j=>j.id==='tb2'),{noz3d:[],nozY3d:0,nozR3d:1}); // propeller drone: no afterburner flame
 // ---- Canards (small foreplanes behind the cockpit), generated as an extra 3D part ----
 // cfg: x/y/z = root leading-edge point (right side), c = root chord, span, tc = tip chord, sw = tip LE sweep back, dh = dihedral rise at tip, th = thickness, uv = body texture spot, mat
