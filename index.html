@@ -2330,9 +2330,10 @@ function update(dt){
       const ch=e.k==='boss'?1:e.k==='bomber'?.6:e.k==='heli'?.45:e.k==='fighter'?.12:.05;
       if(Math.random()<ch){const q=Math.random();let kind;
         if(grounds.length&&!uav&&!powers.some(p=>p.k==='U')&&Math.random()<.4)kind='U';
-        else if(level>=2&&!escort&&!powers.some(p=>p.k==='C')&&Math.random()<.14)kind='C';
         else if(player.hp<player.max&&q<.22)kind='H';else if(q<.5)kind='P';else if(q<.64)kind='S';else if(q<.78)kind='B';else if(q<.9)kind='R';else kind='M';
-        powers.push({x:e.x,y:e.y,k:kind,t:0});}
+        powers.push({x:e.x,y:e.y,k:kind,t:0});
+        // helicopter box comes as an extra drop, never instead of repair/power boxes
+        if(level>=2&&!escort&&!powers.some(p=>p.k==='C')&&Math.random()<.14)powers.push({x:e.x+20*S,y:e.y,k:'C',t:0});}
       const gn={drone:.25,fighter:.6,bomber:1,heli:1,kami:.3,mine:.4}[e.k]||0;
       if(e.k==='boss')dropGold(e.x,e.y,isHard()?40:24);else if(Math.random()<gn)dropGold(e.x,e.y,e.k==='bomber'?4:e.k==='heli'?3:e.k==='fighter'?2:1);
       if(e.k==='mine')ringShot(e.x,e.y,6+Math.floor(DL/2),170,rnd(0,1));
