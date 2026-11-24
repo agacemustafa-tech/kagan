@@ -53,8 +53,12 @@ jobs:
             npm install -D @capacitor/cli@latest @capacitor/assets@3
             npm ls --depth=0
             npx cap add android
-            mkdir -p assets && cp app-assets/* assets/
+            mkdir -p assets && cp app-assets/*.png assets/
             npx @capacitor/assets generate --android --iconBackgroundColor '#0c1f33' --iconBackgroundColorDark '#0c1f33' --splashBackgroundColor '#0c1f33' --splashBackgroundColorDark '#0c1f33'
+            # Android 8+ shows the adaptive icon (mipmap-anydpi-v26), whose foreground layer is still the
+            # Capacitor template logo: replace it with the game icon (full-bleed, so the background never shows)
+            for d in app-assets/android-res/mipmap-*; do cp "$d"/ic_launcher_foreground.png android/app/src/main/res/$(basename "$d")/; done
+            ls android/app/src/main/res/mipmap-anydpi-v26/ && cat android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
             # portrait only
             sed -i 's|<activity|<activity android:screenOrientation="portrait"|' android/app/src/main/AndroidManifest.xml
             # portrait is not a hard requirement, so Play doesn't filter out landscape-only devices
