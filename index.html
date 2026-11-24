@@ -550,7 +550,7 @@ const I18N_SRC={
  reset:['SIFIRLA','RESET','重置','REINICIAR','EFFACER','LÖSCHEN','СБРОС'],
  sure:['EMİN MİSİN?','ARE YOU SURE?','确定吗？','¿SEGURO?','SÛR ?','SICHER?','ТОЧНО?'],
  resetdone:['SIFIRLANDI','DONE','已重置','HECHO','FAIT','ERLEDIGT','ГОТОВО'],
- version:['Sürüm 3.9','Version 3.9','版本 3.9','Versión 3.9','Version 3.9','Version 3.9','Версия 3.9'],
+ version:['Sürüm 4.0','Version 4.0','版本 4.0','Versión 4.0','Version 4.0','Version 4.0','Версия 4.0'],
  rate_t:['Oyunu puanla','Rate the game','为游戏评分','Valora el juego','Noter le jeu','Spiel bewerten','Оценить игру'],
  rate_d:['Beğendiysen Google Play\'de puan ver, bize çok yardımı olur','If you enjoy it, rate us on Google Play — it really helps','喜欢的话请在 Google Play 上评分，这对我们帮助很大','Si te gusta, valóranos en Google Play, nos ayuda mucho','Si le jeu vous plaît, notez-le sur Google Play, ça nous aide beaucoup','Wenn es dir gefällt, bewerte uns bei Google Play – das hilft sehr','Если нравится, поставь оценку в Google Play — это очень помогает'],
  rate_b:['PUANLA','RATE','评分','VALORAR','NOTER','BEWERTEN','ОЦЕНИТЬ'],
@@ -647,8 +647,8 @@ let best=store.get('kaanBest',0),coins=store.get('kaanCoins',0),owned=store.get(
 // TEST BUILD: aircraft unlocked for everyone (remove before the store release)
 const TEST_UNLOCK=APP?[]:['f22','f35','kaan']; // test jets only on the website, never in the store app
 TEST_UNLOCK.forEach(id=>{if(!owned.includes(id))owned.push(id);});store.set('kaanOwned',owned);
-if(!store.get('kaanF22pick',0)){selId='f22';store.set('kaanSel','f22');store.set('kaanF22pick',1);}
-if(!store.get('kaanKaan3dPick',0)){selId='kaan';store.set('kaanSel','kaan');store.set('kaanKaan3dPick',1);}
+if(!APP&&!store.get('kaanF22pick',0)){selId='f22';store.set('kaanSel','f22');store.set('kaanF22pick',1);}
+if(!APP&&!store.get('kaanKaan3dPick',0)){selId='kaan';store.set('kaanSel','kaan');store.set('kaanKaan3dPick',1);}
 // ---- v2 persistent data ----
 const SET=Object.assign({sfx:true,mus:true,vib:true,shake:true},store.get('kaanSet',{}));
 if(store.get('kaanMute',false)===true){SET.sfx=false;SET.mus=false;}
@@ -832,7 +832,8 @@ SIHAS.forEach(m=>{if(!m.price&&!sihaOwned.includes(m.id))sihaOwned.push(m.id);})
 // TEST BUILD: every jet unlocked on the website (store app untouched)
 if(!APP){JETS.forEach(j=>{if(!TEST_UNLOCK.includes(j.id))TEST_UNLOCK.push(j.id);if(!owned.includes(j.id))owned.push(j.id);});SIHAS.forEach(m=>{if(!sihaOwned.includes(m.id))sihaOwned.push(m.id);});store.set('kaanOwned',owned);store.set('kaanSihaOwned',sihaOwned);}
 const SIHA=()=>SIHAS.find(m=>m.id===sihaSel&&sihaOwned.includes(m.id))||SIHAS[0];
-let J=JETS.find(j=>j.id===selId)||JETS[0];UP=upFor(J.id);
+// only a jet the player owns can be flown (store app: unowned saved picks fall back to the starter jet)
+let J=JETS.find(j=>j.id===selId&&owned.includes(j.id))||JETS[0];if(J.id!==selId){selId=J.id;store.set('kaanSel',J.id);}UP=upFor(J.id);
 
 function flag(c,x,y,s,rot){
   c.save();c.translate(x,y);c.rotate(rot||0);c.fillStyle='#e30a17';c.fillRect(-6*s,-4*s,12*s,8*s);
@@ -1993,13 +1994,13 @@ function addCombo(e){
 // they are cleared by the SİHA (drone-support box) or by a bomb.
 // 3D launcher (bought model) rendered once into a sprite, seen from a slightly tilted top view
 let SAM3D=null;const SAM_BB=[-24,-32,48,64];
-function buildSam3D(){if(SAM3D!==null||typeof SAMM==='undefined')return;SAM3D=false;
+function buildSam3D(){if(SAM3D!==null||typeof SAMM==='undefined')return Promise.resolve();SAM3D=false;
   const off=document.createElement('canvas'),v=makeViewer(),R=8,UNIT=36,tl=.95,c=Math.cos(-tl),sn=Math.sin(-tl);
-  v.init(off,SAMM).then(ok=>{if(!ok)return;
+  return v.init(off,SAMM).then(ok=>{if(!ok){freeViewer(v);return;}
     const bw=SAM_BB[2],bh=SAM_BB[3];
     v.render(0,0,0,1,{top:1,w:bw*R,h:bh*R,ox:bw/2/UNIT,oy:bh/2/UNIT,light:[-0.7,0.55,-0.45],
       mtx:new Float32Array([1,0,0,0, 0,c,sn,0, 0,-sn,c,0, 0,-0.2,0.36,1])});
-    const f=document.createElement('canvas');f.width=bw*R;f.height=bh*R;f.getContext('2d').drawImage(off,0,0);SAM3D=f;});}
+    const f=document.createElement('canvas');f.width=bw*R;f.height=bh*R;f.getContext('2d',{willReadFrequently:true}).drawImage(off,0,0);freeViewer(v);if(hasPixels(f))SAM3D=f;});}
 const SP_SAM=()=>SAM3D?mkSpr('sam3d',SAM_BB,g=>{
   g.drawImage(SAM3D,SAM_BB[0],SAM_BB[1],SAM_BB[2],SAM_BB[3]);}):mkSpr('sam',[-22,-24,44,48],g=>{
   // sandbag revetment
@@ -2081,12 +2082,12 @@ function drawGrounds(){grounds.forEach(drawSam);}
 // Destroyers sail the sea levels and launch guided missiles from their vertical launch cells.
 // Guns cannot hurt them: the player's jet locks on by itself and fires anti-ship missiles.
 let SHIP3D=null;const SHIP_BB=[-26,-96,52,192];
-function buildShip3D(){if(SHIP3D!==null||typeof SHIPM==='undefined')return;SHIP3D=false;
+function buildShip3D(){if(SHIP3D!==null||typeof SHIPM==='undefined')return Promise.resolve();SHIP3D=false;
   const off=document.createElement('canvas'),v=makeViewer(),R=4,UNIT=76,tl=.5,c=Math.cos(-tl),sn=Math.sin(-tl);
-  v.init(off,SHIPM).then(ok=>{if(!ok)return;const bw=SHIP_BB[2],bh=SHIP_BB[3];
+  return v.init(off,SHIPM).then(ok=>{if(!ok){freeViewer(v);return;}const bw=SHIP_BB[2],bh=SHIP_BB[3];
     v.render(0,0,0,1,{top:1,w:bw*R,h:bh*R,ox:bw/2/UNIT,oy:bh/2/UNIT,light:[-0.55,0.8,-0.35],
       mtx:new Float32Array([1,0,0,0, 0,c,sn,0, 0,-sn,c,0, 0,-0.2,0,1])});
-    const f=document.createElement('canvas');f.width=bw*R;f.height=bh*R;f.getContext('2d').drawImage(off,0,0);SHIP3D=f;});}
+    const f=document.createElement('canvas');f.width=bw*R;f.height=bh*R;f.getContext('2d',{willReadFrequently:true}).drawImage(off,0,0);freeViewer(v);if(hasPixels(f))SHIP3D=f;});}
 const SP_SHIP=()=>mkSpr('ship3d',SHIP_BB,g=>g.drawImage(SHIP3D,SHIP_BB[0],SHIP_BB[1],SHIP_BB[2],SHIP_BB[3]));
 const SHIP_VLS=[[0,-37],[0,18]],SHIP_STERN=66,SHIP_SPD=16;
 let ships=[],shipT=999,asmM=[],asmLock={tg:null,t:0,cd:0,side:1};
@@ -2786,21 +2787,25 @@ void main(){
 const V3D=makeViewer(),HV={};
 // ---- In-game sprites rendered from a 3D model: one frame per bank angle ----
 const BANKS=[-.6,-.45,-.3,-.15,0,.15,.3,.45,.6];
+// true if a canvas has any visible pixel (a lost WebGL context renders nothing)
+function hasPixels(cv){try{const d=cv.getContext('2d',{willReadFrequently:true}).getImageData(0,0,cv.width,cv.height).data;for(let i=3;i<d.length;i+=64)if(d[i]>0)return true;return false;}catch(e){return true;}}
+function freeViewer(v){try{const lc=v.canvas().getContext('webgl2')||v.canvas().getContext('webgl');const lx=lc&&lc.getExtension('WEBGL_lose_context');if(lx)lx.loseContext();}catch(e){}}
 function build3DSprites(m,data){
-  if(m.spr3d||m.spr3dBusy)return;m.spr3dBusy=true;
+  if(m.spr3d||m.spr3dBusy)return Promise.resolve();m.spr3dBusy=true;
   const RES=6,U={x:48,y:60,w:96,h:120},UNIT=42; // 1 model unit (half length) = 42 sprite units
   const off=document.createElement('canvas'),v=makeViewer();
-  v.init(off,data).then(ok=>{
-    if(!ok){m.spr3dBusy=false;return;}
+  return v.init(off,data).then(ok=>{
+    if(!ok){m.spr3dBusy=false;freeViewer(v);return;}
     const W=U.w*RES,H=U.h*RES,frames=[];
     BANKS.forEach(bk=>{
       v.render(0,0,0,1,{top:1,w:W,h:H,ox:U.w/2/UNIT,oy:U.h/2/UNIT,roll:-bk*1.1,light:[-0.5,0.8,-0.45]});
-      const f=document.createElement('canvas');f.width=W;f.height=H;f.getContext('2d').drawImage(off,0,0);frames.push(f);});
+      const f=document.createElement('canvas');f.width=W;f.height=H;f.getContext('2d',{willReadFrequently:true}).drawImage(off,0,0);frames.push(f);});
+    if(!hasPixels(frames[4])){m.spr3dBusy=false;freeViewer(v);return;} // empty render: keep the 2D jet
     const sh=document.createElement('canvas');sh.width=W;sh.height=H;const sg=sh.getContext('2d');
     if('filter' in sg)sg.filter='blur('+(2*RES)+'px)';sg.drawImage(frames[4],0,0);
     if('filter' in sg)sg.filter='none';sg.globalCompositeOperation='source-in';sg.fillStyle='#000';sg.fillRect(0,0,W,H);
     m.spr3d={frames,shadow:sh,U};m.spr3dBusy=false;
-    try{const lc=v.canvas().getContext('webgl2')||v.canvas().getContext('webgl');const lx=lc&&lc.getExtension('WEBGL_lose_context');if(lx)lx.loseContext();}catch(e){}
+    freeViewer(v);
   });
 }
 
@@ -2898,7 +2903,12 @@ function checkLogin(){if(loginPending()&&!startEl.hidden&&!running)showLogin();}
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkLogin();});
 window.addEventListener('resize',resize);
 applyLang();resize();showBest();paintStart();paintBadge();checkLogin();
-setTimeout(()=>{buildSam3D();buildShip3D();for(const id in MODELS3D){const m=JETS.find(j=>j.id===id)||SIHAS.find(j=>j.id===id);if(m)build3DSprites(m,MODELS3D[id]);}},300);
+// built one after another: Android WebView keeps only a few WebGL contexts alive and drops the oldest,
+// which left the first jet (ATMACA) as an empty, invisible sprite when they were all built at once
+setTimeout(()=>{const ids=Object.keys(MODELS3D).sort((a,b)=>(b===J.id)-(a===J.id));
+  let q=Promise.resolve();const step=f=>{q=q.then(()=>f()).catch(()=>{});};
+  ids.forEach(id=>{const m=JETS.find(j=>j.id===id)||SIHAS.find(j=>j.id===id);if(m)step(()=>build3DSprites(m,MODELS3D[id]));});
+  step(buildSam3D);step(buildShip3D);},300);
 setInterval(()=>{if(!startEl.hidden)drawStatic()},80);
 if(document.fonts)document.fonts.ready.then(drawStatic);
 requestAnimationFrame(loop);
